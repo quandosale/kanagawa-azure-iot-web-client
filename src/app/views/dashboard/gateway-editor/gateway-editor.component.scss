@@ -1,0 +1,110 @@
+.scan-icon-group {
+  font-size: 40px;
+  .text-scan {
+    font-size: 16px;
+    line-height: 20px;
+  }
+  .scan-btn{
+    cursor: pointer;
+  }
+  * {
+    // outline: 1px red solid;
+  }
+}
+
+.device-edit-button-group {
+  padding-top: 10px;
+  .fa {
+    font-size: 30px;
+  }
+  .delete {
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  .edit {
+    cursor: pointer;
+  }
+}
+
+.btn-add {
+  cursor: pointer;
+}
+
+.registed-deivces {
+  .registed-deivce-item {
+    border-bottom: 1px #c2cfd6 solid;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    .calm-device-avatar {
+      padding-top: 10px;
+    }
+    &:last-child {
+      border-bottom-width: 0px;
+      padding-bottom: 0px;
+      margin-bottom: 0px;
+    }
+  }
+}
+
+.error-animation{
+  transition: all ease 1.2s;
+}
+.busySplash {
+  -webkit-animation-name: spin;
+  -webkit-animation-duration: 1000ms;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  -moz-animation-name: spin;
+  -moz-animation-duration: 1000ms;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-timing-function: linear;
+  -ms-animation-name: spin;
+  -ms-animation-duration: 1000ms;
+  -ms-animation-iteration-count: infinite;
+  -ms-animation-timing-function: linear;
+  animation-name: spin;
+  animation-duration: 1000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+#multiple-select {
+  text-transform: uppercase;
+  overflow-y: auto;
+}
+
+@-ms-keyframes spin {
+  from {
+    -ms-transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+  }
+}
+
+@-moz-keyframes spin {
+  from {
+    -moz-transform: rotate(0deg);
+  }
+  to {
+    -moz-transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

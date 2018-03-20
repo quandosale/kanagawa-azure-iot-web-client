@@ -1,0 +1,102 @@
+<div class="animated fadeIn">
+  <div class="row gateway-grid">
+    <div class="col-sm-6 col-lg-3 gateway-item" *ngFor="let gateway of gateways">
+
+      <div class="card text-white bg-primary">
+        <div class="card-body pb-0">
+          <div class="btn-group float-right" dropdown>
+            <button type="button" class="btn btn-transparent dropdown-toggle p-0" dropdownToggle>
+              <i class="icon-settings"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+              <a class="dropdown-item" (click)="openGatewayEditor(gateway)">Edit</a>
+              <a class="dropdown-item" data-toggle="modal" (click)="dangerModal.show(); selectedGateway = gateway;">Delete</a>
+            </div>
+          </div>
+          <div (click)="openGatewayEditor(gateway)" class="gateway-info">
+            <h4 class="mb-0">{{gateway.name || 'No Name'}}</h4>
+            <p>{{gateway.devices.length}} Devices</p>
+          </div>
+        </div>
+      </div>
+      <!-- /.bg-primary -->
+
+    </div>
+
+    <div class="col-sm-6 col-lg-3 gateway-item" *ngFor="let gateway of unApprovedGateways">
+      <div class="card text-white bg-warning">
+        <div class="card-body pb-0">
+          <div class="btn-group float-right" dropdown>
+            <button type="button" class="btn btn-transparent dropdown-toggle p-0" dropdownToggle>
+              <i class="icon-settings"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+              <a class="dropdown-item">Edit</a>
+              <a class="dropdown-item" data-toggle="modal" (click)="dangerModal.show(); selectedGateway = gateway;">Delete</a>
+            </div>
+          </div>
+          <div class="gateway-info">
+            <h4 class="mb-0">{{gateway.name || 'No Name'}}</h4>
+            <p class="text-right btn-group-approv">
+              <button class="btn btn-success" (click)="onTapAllowOrReject(gateway, true);">Allow</button>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <button class="btn btn-danger" (click)="rejectModal.show(); selectedGateway = gateway;">Reject</button>
+            </p>
+          </div>
+        </div>
+
+        <!-- /.bg-warning -->
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+
+  <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-danger" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Please Confirm</h4>
+          <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure to delete this gateway?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()">Close</button>
+          <button type="button" class="btn btn-danger" (click)="deleteGateway(); dangerModal.hide()">Confirm</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+
+  <ma-slide-popup [open]="gatewayEditorOpened" (close)="gatewayEditorOpened = false" [width]="'600px'">
+    <gateway-editor [gateway]="selectedGateway" *ngIf="gatewayEditorOpened" (close)="onEditorClose($event)"></gateway-editor>
+  </ma-slide-popup>
+
+  <div bsModal #rejectModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-danger" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Please Confirm</h4>
+          <button type="button" class="close" (click)="rejectModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure to Reject this gateway?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="rejectModal.hide()">Close</button>
+          <button type="button" class="btn btn-danger" (click)="rejectGateway(); rejectModal.hide()">Confirm</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->

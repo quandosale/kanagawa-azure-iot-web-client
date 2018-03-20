@@ -1,0 +1,41 @@
+.sleep-stage {
+    margin-top: 8px;
+    .g-line {
+        margin-top: 10px;
+    }
+    .item {
+        float: left;
+        height: 23px;
+        &.line {
+            width: calc(100% - 174px);
+            &.awake {
+                background: #FD2000;
+                width: 20px;
+            }
+            &.rem {
+                background: #FF9400;
+                width: 150px;
+            }
+            &.shallow {
+                background: #FFFC00;
+                width: 110px;
+            }
+            &.deep {
+                background: #9DFA00;
+                width: 90px;
+            }
+            &.warmup{
+                background: gray;
+                width: 180px;
+            }
+        }
+        &.value {
+            width: 164px;
+            margin-left: 10px;
+            font-size: 13px;
+            .meaning {
+                color: gray;
+            }
+        }
+    }
+}

@@ -1,0 +1,265 @@
+.data-page {
+  background: #FFFFFF;
+  margin: 20px 50px;
+  border-radius: 4px;
+  padding: 20px;
+  color: #000;
+}
+
+@media (max-width:767px) {
+  .data-page {
+    margin: 20px 10px;
+  }
+}
+
+.filter-sidebar {
+  float: left;
+  .filter-by {
+    border-bottom: 1px gray solid;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+}
+
+@media (min-width:992px) {
+  .filter-div {
+    padding-right: 20px;
+    border-right: 1px gray solid;
+  }
+}
+
+/**********Content table*********/
+
+.filter-sidebar hr {
+  height: 5px;
+  background: #000;
+  border: 0px;
+}
+
+.month-section {
+  // outline: 1px red solid;
+  margin: 5px 0;
+  padding-left: 3px;
+  .month-label {
+    // outline: 1px blue solid;
+    width: 70px;
+    margin-right: 40px;
+    float: left;
+    border-bottom: 3px #000 solid;
+  }
+}
+
+.chk-layer {
+  float: left;
+  width: 30px;
+  input[type=checkbox] {
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(1.5);
+    /* IE */
+    -moz-transform: scale(1.5);
+    /* FF */
+    -webkit-transform: scale(1.5);
+    /* Safari and Chrome */
+    -o-transform: scale(1.5);
+    /* Opera */
+    padding: 10px;
+  }
+}
+
+.data-type-section {
+  margin-top: 10px;
+  color: #000; // padding: 0 15px;
+  .data-type-title {
+    width: 100px;
+    border-bottom: 3px #000 solid;
+    margin-bottom: 3px;
+  }
+  .data-type-option {
+    padding-left: 15px;
+    .exercise-label {
+      float: left;
+      width: 70px;
+    }
+  }
+}
+
+.no-data {
+  cursor: default;
+  padding: 50px 0px 70px 0px;
+}
+
+/**********Content table*********/
+
+.data-list-container {
+  // width: calc(100% - 280px);
+  // padding-left: 30px;
+  // max-width: 750px;
+  float: left;
+  font-size: 16px;
+  .header {
+    line-height: 40px;
+    background: #494D51;
+    color: #fff; // height: 40px;
+    margin-bottom: 15px;
+    padding: 0 27px 0 10px;
+    .header-content {
+      * {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+      }
+      div {
+        cursor: pointer;
+      }
+      .sort {
+        width: 14px;
+      }
+    }
+  }
+  .date {
+    /* outline: 1px red solid; */
+    display: block; // width: 27%;
+    // max-width: 120px;
+    float: left;
+  }
+  .content {
+    color: #000;
+    /*height: 35px;*/
+    padding: 0 10px;
+    overflow-y: scroll;
+    height: 678px;
+    float: left;
+    .c-row {
+      cursor: pointer;
+      .c-row-content {
+        padding: 7px 0px;
+        &.detail:nth-child(odd) {
+          background: #eeeeee;
+        }
+        &.detail:nth-child(even) {}
+      }
+      &.more-btn-row:hover {
+        background: transparent;
+        .more-btn {
+          outline: none !important;
+        }
+      }
+      &:hover {
+        font-weight: bold;
+      }
+    }
+    .day-start {
+      // margin-top: 5px;
+      &.isTop {
+        margin-top: 0px;
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .data-list-container {
+    padding-left: 30px;
+  }
+}
+
+.storage-used {
+  line-height: 40px;
+  margin-top: 12px;
+  background: #494D51;
+  color: white;
+}
+
+.select {
+  margin: 10px 0px;
+}
+
+select.selectpicker {
+  display: none;
+}
+
+.splashWrapper {
+  display: inline-block; // width: 40px;
+  position: relative;
+  padding-top: 5px;
+  margin-right: 22px;
+  .busySplash {
+    position: absolute;
+    top: -16px;
+    left: calc(50% - 8px);
+    visibility: hidden;
+    display: inline-block;
+    font-size: 30px; // margin-top: 5px;
+    margin-right: 5px;
+    line-height: 30px;
+    color: #fff;
+    height: 30px;
+    -webkit-animation-name: spin;
+    -webkit-animation-duration: 1000ms;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-name: spin;
+    -moz-animation-duration: 1000ms;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: linear;
+    -ms-animation-name: spin;
+    -ms-animation-duration: 1000ms;
+    -ms-animation-iteration-count: infinite;
+    -ms-animation-timing-function: linear;
+    animation-name: spin;
+    animation-duration: 1000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    &.Show {
+      visibility: visible;
+    }
+  }
+  @-ms-keyframes spin {
+    from {
+      -ms-transform: rotate(0deg);
+    }
+    to {
+      -ms-transform: rotate(360deg);
+    }
+  }
+  @-moz-keyframes spin {
+    from {
+      -moz-transform: rotate(0deg);
+    }
+    to {
+      -moz-transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes spin {
+    from {
+      -webkit-transform: rotate(0deg);
+    }
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+.select-group {
+  border: 1px solid #c2cfd6;
+  height: 120px;
+  margin-top: 10px;
+  .select-item {
+    line-height: 20px;
+    padding-left: 10px;
+    cursor: pointer;
+    &:hover {
+      font-weight: bold;
+    }
+  }
+}

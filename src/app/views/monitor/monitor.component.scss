@@ -1,0 +1,157 @@
+
+.graph {
+    background-image: url(//assets/img/ecg-chart.png);
+    width: 100%;
+    height: 100px;
+    background-size: 100% 100%;
+}
+.posture{
+    padding-top: 30px;
+}
+#myChart {
+    outline: 1px red solid;
+    background: #FFFFFF;
+}
+
+.icon {
+    vertical-align: middle;
+    font-size: 45px;
+    display: inline-block;
+}
+
+.device-status .fa-thermometer-full {
+    margin-right: 3px;
+    vertical-align: middle;
+}
+
+.device-status .temp-value {
+    vertical-align: middle;
+    display: inline-block;
+    margin-right: 30px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.device-status .fa-heartbeat {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.device-status .heartbeat-value {
+    vertical-align: middle;
+    display: inline-block;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.device-status .rss {
+    vertical-align: middle;
+    background-image: url("/assets/img/rssi4.png");
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    background-size: 100% 100%;
+    background-position: -2px -4px;
+    margin-right: 3px;
+}
+
+.hover-animate {
+    transition: all .3s ease;
+}
+
+.hover-animate:hover {
+    transition: all .3s ease;
+    transform: scale(1.1);
+}
+
+.device-status .rss.i-0 {
+    background-image: url(/assets/img/rssi0.png);
+}
+
+.device-status .rss.i-1 {
+    background-image: url(/assets/img/rssi1.png);
+}
+
+.device-status .rss.i-2 {
+    background-image: url(/assets/img/rssi2.png);
+}
+
+.device-status .rss.i-3 {
+    background-image: url(/assets/img/rssi3.png);
+}
+
+.device-status .rss.i-4 {
+    background-image: url(/assets/img/rssi4.png);
+}
+
+.device-status .rss.i-5 {
+    background-image: url(/assets/img/rssi5.png);
+}
+
+
+/* [BEGIN battery] */
+
+.battery {
+    vertical-align: middle;
+    width: 30px;
+    height: 24px;
+    margin-right: 9px;
+    padding: 2px;
+    display: inline-block;
+    position: relative;
+    border: 2px solid #000;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+
+.battery:before {
+    background: #000;
+    content: ' ';
+    width: 60%;
+    height: 100%;
+    display: inline-block;
+    border-radius: 3px 0 0 3px;
+    -moz-border-radius: 3px 0 0 3px;
+    -webkit-border-radius: 3px 0 0 3px;
+    animation-name: loadbattery;
+    animation-duration: 3s;
+}
+
+.battery:after {
+    background: #000;
+    width: 4px;
+    height: 12px;
+    content: ' ';
+    display: inline-block;
+    position: absolute;
+    right: -7px;
+    top: 25%;
+    border-radius: 0 4px 4px 0;
+    -moz-border-radius: 0 4px 4px 0;
+    -webkit-border-radius: 0 4px 4px 0;
+}
+
+@keyframes loadbattery {
+    0% {
+        width: 0px;
+    }
+    100% {
+        width: 60%;
+    }
+}
+
+
+/* [END battery] */
+
+.fa-rss {
+    font-size: 25px;
+}
+
+.fa-thermometer-full {
+    font-size: 25px;
+}
+
+.fa-heartbeat {
+    font-size: 25px;
+}

@@ -1,0 +1,108 @@
+.mycalendar {
+  width: 100%;
+  /*min-width: 218px;*/
+  background: transparent; // margin-bottom: 20px;
+  padding: 0px 15px;
+  padding-top: 0px; // height: 230px;
+  /*border-radius: 4px;*/
+  // box-shadow: 0px 0px 1px 0px gray;
+  /*border: 1px gray solid;*/
+  //   .month-section {
+  //     // outline: 1px red solid;
+  //     margin: 5px 0;
+  //     .month-label {
+  //       // outline: 1px blue solid;
+  //       width: 70px;
+  //       margin-right: 40px;
+  //       float: left;
+  //       border-bottom: 3px #000 solid;
+  //     }
+  //     .chk-layer {
+  //       // outline: 1px green solid;
+  //       float: left;
+  //       width: 30px;
+  //       input[type=checkbox] {
+  //         /* Double-sized Checkboxes */
+  //         -ms-transform: scale(1.5);
+  //         /* IE */
+  //         -moz-transform: scale(1.5);
+  //         /* FF */
+  //         -webkit-transform: scale(1.5);
+  //         /* Safari and Chrome */
+  //         -o-transform: scale(1.5);
+  //         /* Opera */
+  //         padding: 10px;
+  //       }
+  //     }
+  //   }
+}
+
+.mwl-calendar {
+  mwl-calendar-month-view {
+    display: block;
+    &.all {
+      cursor: not-allowed; //   background: rgba(77, 41, 41, 0.233);
+    }
+    &.month {
+      //   background: rgba(153, 214, 112, 0.233);
+    }
+    &.day {
+      //   background: rgba(162, 165, 5, 0.233);
+    }
+    &.week {
+      //   background: rgba(101, 150, 223, 0.233);
+    }
+  }
+}
+
+.calendar-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  color: #fff;
+  padding: 0px 15px;
+  background: #2E343E;
+  margin: 0 -15px;
+  /*outline: 1px blue solid;*/
+}
+
+.calendar-header .monthbtn {
+  width: 40px;
+  cursor: pointer;
+  padding: 10px;
+  line-height: 100%;
+  /*outline: 1px red solid;*/
+}
+
+.calendar-header .monthbtn:hover .calendar-dec,
+.calendar-header .monthbtn:hover .calendar-inc {
+  color: red;
+}
+
+.calendar-header .monthbtn:hover .calendar-inc.inc-disable {
+  cursor: not-allowed!important;
+}
+
+.calendar-header .monthbtn .calendar-dec,
+.calendar-header .monthbtn .calendar-inc {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  /*outline: 1px yellow solid;*/
+}
+
+.calendar-header .month {
+  font-size: 25px;
+}
+
+.calendar-header .year {
+  font-size: 14px;
+  /*color: #B8E5FB;*/
+  margin-top: -5px;
+}
+
+.cal-month-view .cal-header {
+  text-align: center;
+  font-weight: bolder;
+}

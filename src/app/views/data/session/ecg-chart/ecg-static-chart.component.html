@@ -1,0 +1,61 @@
+<div class="ecg-acc">
+  <div class="graph">
+    <div id="accelerometerGraph" class="demo-placeholder" (window:resize)="onEcgResize($event)" (click)="onMouseClick($event)"></div>
+    <div class="overlayer" [class.Show]="isNotEnough">{{'page.data.Data is empty' | translate}}</div>
+    <i class="fa fa-spinner busySplash" [class.Show]="isBusy && !isNotEnough"></i>
+    <i class="percent" [class.Show]="percent && isBusy">{{percent}}</i>
+    <!-- <i class="fa fa-spinner busySplash" [class.Show]="true"></i>
+    <i class="percent" [class.Show]="true">99%</i> -->
+
+  </div>
+  <div class="seekbargroup">
+    <div id="seekbar"></div>
+  </div>
+  <div class="playgroup">
+    <div class="content">
+      <span>{{timeNow}} / {{timeTotal}}</span>
+      <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    </div>
+    <span (click)="zoomin()" class="rect" [style.opacity]="zoom==1 ? '0.2' : '1'">
+      <span class="bt-p">
+        <i class="fa fa-search-plus"></i>
+      </span>
+    </span>
+    <span (click)="zoomout()" class="rect" [style.opacity]="zoom==4 ? '0.2' : '1'">
+      <span class="bt-p">
+        <i class="fa fa-search-minus"></i>
+      </span>
+    </span>
+    <span (click)="speedDown()" class="rect hidden-xs" [style.opacity]="speed==1 ? '0.2' : '1'">
+      <span class="bt-p">
+        <i class="fa fa-backward"></i>
+      </span>
+    </span>
+    <span (click)="play()" class="rect hidden-xs" *ngIf="!isPlaying">
+      <span class="bt-p">
+        <i class="fa fa-play"></i>
+      </span>
+    </span>
+    <span (click)="stop()" class="rect hidden-xs" *ngIf="isPlaying">
+      <span class="bt-p">
+        <i class="fa fa-pause"></i>
+      </span>
+    </span>
+    <span (click)="speedUp()" class="rect hidden-xs" [style.opacity]="speed==8 ? '0.2' : '1'">
+      <span class="bt-p">
+        <i class="fa fa-forward"></i>
+      </span>
+    </span>
+    <span class="rect zoom" (click)="toggleHeightZoom($event)">
+      <i class="fa fa-expand bt-p" [class.hidden]="heightzoom"></i>
+      <i class="fa fa-compress bt-p" [class.hidden]="!heightzoom"></i>
+    </span>
+    <div class="content">
+      <span>&nbsp;&nbsp;&nbsp;</span>
+      <span>Time Scale: {{zoom * 6}}s</span>
+      <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      <span>Speed: {{speed}}x</span>
+    </div>
+  </div>
+  <!--<span id='debug'>this.queue.length</span>-->
+</div>

@@ -1,0 +1,26 @@
+<div class="titlebar">
+  <span>
+    {{deviceName}}
+    <small>{{formatMac(device.mac)}}</small>
+  </span>
+  <span (click)="onClose()">&times;</span>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    Basic
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <label class="col-md-3 form-control-label" for="text-input">Name</label>
+      <div class="col-md-9">
+        <input class="form-control" name="device-name" placeholder="Device Name" type="text" [(ngModel)]="device.name">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="actions float-right">
+  <button class="btn btn-primary" (click)="close.emit(device)" [disabled]="!device.name || deviceName == device.name">Save</button>
+  <button class="btn btn-secondary" (click)="close.emit()">Cancel</button>
+</div>

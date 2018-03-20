@@ -1,0 +1,14 @@
+<div class="hrt">
+  <div class="hr-parent clearfix">
+    <div id="hrtgraph-legend" (window:resize)="onHrtResize($event)"></div>
+    <div id="hrtgraph" (window:resize)="onHrtResize($event)" (mousemove)='onMouseMove($event)' (mouseleave)="onMouseLeave($event)">
+    </div>
+
+    <div class="overlayer" [class.Show]="isBusy"></div>
+    <i class="fa fa-spinner busySplash" [class.Show]="isBusy"></i>
+    <div class="error-message" [class.Show]="isError">{{'page.data.Data is empty' | translate}}</div>
+  </div>
+
+  <!-- <div class="x-unit">(h:m)</div> -->
+  <div id='tooltip'></div>
+</div>

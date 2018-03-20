@@ -1,0 +1,164 @@
+<div class="titlebar">
+  <span>
+    {{gatewayName}}
+    <small>{{gateway.deviceId}}</small>
+  </span>
+  <span (click)="close.emit(null)">&times;</span>
+</div>
+<div class="busyOverlay" *ngIf="isSaving">
+  <i class="fa fa-spinner" [class.busySplash]="true"></i>
+</div>
+<div class="gateway-editor-section">
+  <div class="card">
+    <div class="card-header">
+      Basic
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <label class="col-md-3 form-control-label" for="text-input">Name</label>
+        <div class="col-md-9">
+          <input class="form-control" name="gateway-name" placeholder="Gateway Name" type="text" [(ngModel)]="gateway.name">
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- [BEGIN devices body] -->
+  <div class="card">
+    <div class="card-header">
+      <strong>Add New Device</strong>
+      <!-- <small>Form</small> -->
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-3">
+          <div class="scan-icon-group loading text-center">
+            <i class="fa fa-spinner" [class.busySplash]="isLoading"></i>
+            <div>
+              <button class="btn btn-primary btn-sm text-scan scan-btn" (click)="onTapScan()" [disabled]="isLoading">
+                Scan
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-9">
+          <select id="multiple-select" name="multiple-select" class="form-control" size="3" [(ngModel)]="selectedMacAddress">
+            <option *ngFor="let device of scannedDevices; let i = index" value="{{device.mac}}">{{device.name}} {{formatMac(device.mac)}}</option>
+          </select>
+          <p class="err mt-3 mb-0 error-animation" *ngIf="scanError">Could not command gateway to scan devices.
+            <br>Please make sure the gateway is live.</p>
+
+          <div class="form-group mt-3">
+            <div class="input-group">
+              <span class="input-group-addon">Name</span>
+              <input type="text" class="form-control1" [(ngModel)]="userName" />
+              <span class="input-group-addon btn-add" (click)="onTapAdd()" [ngClass]="{'disabled': !selectedMacAddress || !userName}">Add</span>
+            </div>
+            <p class="err mt-3 mb-0" *ngIf="existsError">The device is already added to the gateway.
+              <br>Please make sure the gateway is live.</p>
+          </div>
+        </div>
+        <!--/.col-9-->
+      </div>
+    </div>
+    <!--/.card-body-->
+  </div>
+  <!--/.card-->
+
+  <div class="card">
+    <div class="card-header">
+      <strong>Registered Devices</strong>
+    </div>
+    <div class="card-body">
+      <div class="registed-deivces">
+        <div class="registed-deivce-item clearfix" *ngFor="let device of gateway.devices; let i = index">
+          <div class="row">
+            <div class="col-3 loading1">
+              <div class="calm-device-avatar text-center">
+                <img src="assets/img/calm.png" width="90">
+              </div>
+            </div>
+
+            <div class="col-7">
+              <div class="">
+                <div class="">
+                  Type: CALM-ECG
+                </div>
+                <div class="text-uppercase">
+                  MAC: {{formatMac(device.mac)}}
+                </div>
+                <div>
+                  Name: {{device.name}}
+                </div>
+              </div>
+            </div>
+            <div class="col-2 device-edit-button-group">
+              <div class="row">
+                <div class="edit text-center" (click)="openDeviceEditor(device)">
+                  <i class="fa fa-cog"></i>
+                  <div class="text-scan text-center">
+                    Edit
+                  </div>
+                </div>
+
+                <div class="delete text-center" (click)="showDeleteConfirm(device)">
+                  <i class="fa fa-trash"></i>
+                  <div class="text-scan text-center">
+                    Delete
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.row -->
+          <!-- <div class="row">
+            <div class="col-3"></div>
+            <div class="col-9">
+              <p class="err mt-3 mb-0" *ngIf="deleteError[device.mac]">Could not Remove device
+                <br>Please make sure the gateway is live.</p>
+            </div>
+          </div> -->
+        </div>
+        <!--/.registed-deivce-item-->
+
+      </div>
+      <!-- /.registed-deivces -->
+    </div>
+    <!-- ./card-body -->
+  </div>
+  <div class="actions float-right">
+    <button class="btn btn-primary" (click)="onSave()" [disabled]="!gateway.name">Save</button>
+    <button class="btn btn-secondary" (click)="onCancel();close.emit(null);">Cancel</button>
+  </div>
+  <!--/.card-->
+</div>
+<!--/.gateway-editor-section-->
+
+
+<div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+  [config]="{backdrop: 'static'}">
+  <div class="modal-dialog modal-danger" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Please Confirm</h4>
+        <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure to delete this gateway?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()">Close</button>
+        <button type="button" class="btn btn-danger" (click)="onDeleteDevice()">Confirm</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<ma-slide-popup [open]="deviceEditorOpened" [width]="'400px'" eleId="device-editor">
+  <device-editor [device]="device" *ngIf="deviceEditorOpened" (close)="deviceEditorClosed($event)"></device-editor>
+</ma-slide-popup>

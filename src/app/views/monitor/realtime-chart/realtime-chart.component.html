@@ -1,0 +1,60 @@
+<div class="card card-default">
+  <div class="card-header">{{device.name}}
+    <div class="pull-right tooltip-custom">
+      <img src="{{ecgChartComponent.data.length==0 ? 'assets/img/device-connected.png' : 'assets/img/device-disconnected.png'}}"
+        width="25" alt="Device Connect Status" />
+      <span *ngIf="ecgChartComponent.data.length!=0" class="tooltiptext">Calm Device connected</span>
+      <span *ngIf="ecgChartComponent.data.length==0" class="tooltiptext">Calm Device disconnected</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-10">
+        <ecg-chart #EcgChartComponent></ecg-chart>
+      </div>
+      <div class="col-2 text-center posture">
+        <h5>Posture</h5>
+        <img src="{{postureImageSrc}}" class="img img-circle" [ngClass]="{'red': postureImageSrc=='assets/img/user-what.png'}" />
+      </div>
+      <div class="col-10">
+        <div class="device-status row">
+          <div class="col-6">
+            <!-- <i>Sensor:
+            <b>{{isSensor ? ' ON' : 'OFF'}}</b>
+          </i> -->
+            <div class="tooltip-custom">
+              <img src="{{rssiImageSrc}}" width="25" style="vertical-align: bottom" />
+              <span *ngIf="rssi==-1000" class="tooltiptext">rssi : Unknown</span>
+              <span *ngIf="rssi!=-1000" class="tooltiptext">rssi : {{rssi}}</span>
+            </div>
+            <i class="rss i-5 hover-animate"></i>
+            <div class="battery hover-animate" [attr.data-charge]="battery" style="margin-top:5px;"></div>
+
+            <span class="temp-value hover-animate">
+              <b>{{temperature}}&#8451;</b>
+            </span>
+          </div>
+          <div class="col-6">
+            <i class="fa fa-heartbeat hover-animate"></i>
+            <span class="heartbeat-value hover-animate">
+              <b>{{heartrate
+                < 0 ? "-" : heartrate}} bpm</b>
+            </span>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="row">
+          <!-- Rounded switch -->
+          <span class="form-group">
+            <span class="switch switch-sm">
+              <input type="checkbox" class="switch" [attr.id]="device.mac" [(ngModel)]="isRecord" (change)="onSwitchRecord()">
+              <label [attr.for]="device.mac">Record</label>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

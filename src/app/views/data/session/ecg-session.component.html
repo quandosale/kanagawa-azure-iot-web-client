@@ -1,0 +1,50 @@
+<div class="session">
+  <div class="max-width-960">
+    <div class="pull-left status-bar">
+      <div class="time">2018/03/15 9:00 </div>
+      <span class="m-hvalue" style="font-size: 25px;display: inline-block;margin-left: 20px;">5 minutes data from Steven at Room 2</span>
+    </div>
+    <div class="container-fluid">
+      <!-- <div class="col-xs-1 pull-right">
+        <div class="closebtn" (click)="backClicked()">
+          &times;
+        </div>
+      </div> -->
+      <div class="col-xs-6 pull-right af form-group label-af">
+        <span>Show Irregular Beat Rythms</span>
+        &nbsp;
+        <input class="chk-af-toggle" type="checkbox" [(ngModel)]="isShowAF" (change)="tapShowAF()" [disabled]="!isEnableAF" />
+      </div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <div class="max-width-960 top-20">
+
+    <div class="graph row">
+
+      <div class="heart-rate col-sm-6 col-12">
+        <!-- <div class="row"> -->
+        <div class="heart-rate-label">Heart Rate</div>
+        <heart-rate-chart class="h-graph" #hrtChart [dataSetId]="dataSetId" [dataSetTime]="date" [scope]="accChart.scope" [accSeekbar]="accChart.seekbarPosition"
+          (hrClicked)="accChart.seekbarClick($event);"></heart-rate-chart>
+        <!-- </div> -->
+      </div>
+
+      <div class="heart-rate col-sm-5 col-12">
+        <!-- <div class="row"> -->
+        <div class="heart-rate-label">Posture</div>
+        <posture-chart class="h-graph"></posture-chart>
+        <!-- </div> -->
+      </div>
+
+      <div class="ecg-plot col-12" style="margin-top:25px;">
+        <!-- <div class="row"> -->
+        Electrocadiogram
+        <ecg-static-chart class="clearfix ecg-main-chart" [dataSetId]="dataSetId" [dataSetTime]="date" #accChart (hrUpdate)="hrtChart.update()"></ecg-static-chart>
+        <!-- </div> -->
+      </div>
+      <div class="clearfix"></div>
+
+    </div>
+  </div>
+</div>

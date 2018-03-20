@@ -1,0 +1,12 @@
+<div class="ma-overlay">
+</div>
+
+<div class="ma-slide-popup-content" [ngStyle]="{'width': width}">
+  <div class="titlebar" *ngIf="title">
+    <span>
+      {{title}}
+    </span>
+    <span (click)="onClose('cancel')">&times;</span>
+  </div>
+  <ng-content></ng-content>
+</div>

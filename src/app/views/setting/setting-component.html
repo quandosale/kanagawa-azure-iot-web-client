@@ -1,0 +1,60 @@
+Alarms
+
+<div class="row">
+  <div class="col-md-4 col-6" style="background:#000;margin-bottom:20px;"></div>
+  <div class="col-6"></div>
+  <div class="col-md-4 col-sm-6">
+    <div class="card card-default">
+      <div class="card-header">
+        Sensor Off Alarm
+        <span class="form-group">
+          <span class="switch switch-sm">
+            <input type="checkbox" class="switch" id="switch-sm" [(ngModel)]="isAlarmSensorOff" (change)="onSwitchSensorOff()">
+            <label for="switch-sm"></label>
+          </span>
+        </span>
+
+      </div>
+      <div class="card-body">
+        <!-- [BEGIN steven] -->
+        <div class="form-check mb-2 mr-sm-2 mb-sm-0">
+          <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="isSensorSound" (change)="onSwitchSensorSound()" [attr.disabled]="!isAlarmSensorOff?'':null"> Play Sound
+          </label>
+        </div>
+        <div class="form-check mb-2 mr-sm-2 mb-sm-0">
+          <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="isSensorFlash" (change)="onSwitchSensorFlash()" [attr.disabled]="!isAlarmSensorOff?'':null"> Flash Icon
+          </label>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="card card-default">
+      <div class="card-header">
+        Disconnect Alarm
+        <span class="form-group">
+          <span class="switch switch-sm">
+            <input type="checkbox" class="switch" id="switch-sm2" [(ngModel)]="isAlarmDisconnect" (change)="onSwitchDisconnect()">
+            <label for="switch-sm2"></label>
+          </span>
+        </span>
+
+      </div>
+      <div class="card-body">
+        <!-- [BEGIN steven] -->
+        <div class="form-check mb-2 mr-sm-2 mb-sm-0">
+          <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="isDisconnectSound" (change)="onSwitchDisconnectSound()" [attr.disabled]="!isAlarmDisconnect?'':null"> Play Sound
+          </label>
+        </div>
+        <div class="form-check mb-2 mr-sm-2 mb-sm-0">
+          <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="isDisconnectFlash" (change)="onSwitchDisconnectFlash()" [attr.disabled]="!isAlarmDisconnect?'':null"> Flash Icon
+          </label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

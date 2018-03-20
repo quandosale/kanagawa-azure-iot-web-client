@@ -1,0 +1,24 @@
+<div class="mycalendar">
+  <!-- <div class="month-section clearfix">
+    <div class="month-label">Month</div>
+    <div class="chk-layer">
+      <input class="chk-month" type="checkbox" />
+    </div>
+  </div> -->
+  <div class="calendar-header">
+    <div class="monthbtn" (click)="decrement()">
+      <i class="fa fa-angle-left calendar-dec"></i>
+    </div>
+    <div style="text-align: center">
+      <div class='month'>{{month}}</div>
+      <div class='year'>{{year}}</div>
+    </div>
+    <div class="monthbtn text-right" (click)="increment()">
+      <i class="fa fa-angle-right calendar-inc"></i>
+    </div>
+  </div>
+  <div class="mwl-calendar">
+    <mwl-calendar-month-view [viewDate]="viewDate" (dayClicked)="dayClicked($event.day)" [ngClass]="{'all': type=='all','month': type=='month','day': type=='day','week': type=='week'}">
+    </mwl-calendar-month-view>
+  </div>
+</div>

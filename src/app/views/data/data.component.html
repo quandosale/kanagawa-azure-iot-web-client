@@ -1,0 +1,131 @@
+<!-- <div [ngBusy]="busy"></div> -->
+
+<div class="data-page clearfix">
+
+  <div class="filter-sidebar col-md-3 col-12">
+    <div class="row">
+      <!-- <h2 class="data-history" translate>History</h2> -->
+      <div class="filter-div">
+        <div class="filter-by" translate>Filter By</div>
+        <br>
+
+        <div class="month-section clearfix">
+
+          <div class="chk-layer">
+            <input class="chk-month" type="checkbox" [(ngModel)]="isMonthFilter" (change)="tapFilter()" />
+          </div>
+          <div class="month-label" translate>Date</div>
+        </div>
+
+        <select-calendar-type [selectedCalendarType]="selectedCalendarType"></select-calendar-type>
+
+
+        <div class="calendar">
+          <my-calendar (dayClickedEvent)="dayClicked($event)"></my-calendar>
+        </div>
+        <div class="month-section clearfix">
+
+          <div class="chk-layer">
+            <input class="chk-month" type="checkbox" [(ngModel)]="isGatewayFilter" (change)="tapFilter()" />
+          </div>
+          <div class="month-label" translate>Gateway</div>
+        </div>
+
+        <div class="input-group">
+          <input class="form-control" placeholder="Room 1">
+          <div class="input-group-addon">
+            <i class="fa fa-search"></i>
+          </div>
+        </div>
+        <div class="select-group gateway-select">
+          <div class="select-item gateway-item">Room 1</div>
+          <div class="select-item gateway-item">Room 2</div>
+        </div>
+
+        <div class="month-section clearfix">
+
+          <div class="chk-layer">
+            <input class="chk-month" type="checkbox" [(ngModel)]="isUserFilter" (change)="tapFilter()" />
+          </div>
+          <div class="month-label" translate>User</div>
+        </div>
+
+        <div class="input-group">
+          <input class="form-control" placeholder="Steven">
+          <div class="input-group-addon">
+            <i class="fa fa-search"></i>
+          </div>
+        </div>
+
+        <div class="select-group gateway-select">
+          <div class="select-item gateway-item">Room 1</div>
+          <div class="select-item gateway-item">Room 2</div>
+        </div>
+      </div>
+    </div>
+    <!-- row -->
+  </div>
+  <!-- [END] filter-sidebar-->
+  <div class="data-list-container  col-md-9 col-12">
+    <div class="row">
+      <div class="header col-12">
+        <div class="header-content row">
+          <div class="col-sm-4" translate>
+            Date / Time
+            <img *ngIf="sortUp" src="assets/img/sort-up.png" class="sort">
+            <img *ngIf="!sortUp" src="assets/img/sort-down.png" class="sort">
+          </div>
+          <div class="col-sm-2 text-center" style="outline:1px red sold;" (click)="onTapSort()" translate>
+            User
+            <img *ngIf="sortUp" src="assets/img/sort-up.png" class="sort">
+            <img *ngIf="!sortUp" src="assets/img/sort-down.png" class="sort">
+          </div>
+          <div class="col-sm-2 text-center" style="outline:1px red sold;" (click)="onTapSort()" translate>
+            Room
+            <img *ngIf="sortUp" src="assets/img/sort-up.png" class="sort">
+            <img *ngIf="!sortUp" src="assets/img/sort-down.png" class="sort">
+          </div>
+          <div class="col-sm-4 text-center" style="outline:1px red sold;" (click)="onTapSort()" translate>
+            Duration
+            <img *ngIf="sortUp" src="assets/img/sort-up.png" class="sort">
+            <img *ngIf="!sortUp" src="assets/img/sort-down.png" class="sort">
+          </div>
+        </div>
+      </div>
+      <div class="content col-12">
+
+        <div class="c-row" *ngFor="let item of DataForDisplay;let index = index" (click)="showDetail(item)">
+          <div class="c-row-content row" *ngIf="item.isFirst">
+            <div class="col-12">
+              {{item.datetime}}
+            </div>
+          </div>
+          <!-- ./row For Date -->
+          <div class="c-row-content detail row">
+            <div class="col-sm-4">
+              <div>{{item.time}}</div>
+            </div>
+            <div class="col-sm-2 text-center">{{item.gatewayId}}</div>
+            <div class="col-sm-2 text-center">{{item.deviceId}}</div>
+            <div class="col-sm-4 text-center">
+              {{item.durationStr}}
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <!-- ./row For Dataset -->
+        </div>
+        <!-- ./ngFor DataForDisplay -->
+
+        <div class="c-row day-start more-btn-row clearfix">
+          <div class="col-12 text-center">
+            <div class="no-data" *ngIf="noData">{{message}}</div>
+            <!-- <button class="col-12 btn more-btn" (click)="tapMore();">{{'page.data.More'}}</button> -->
+          </div>
+        </div>
+
+      </div>
+      <!-- ./content -->
+    </div>
+  </div>
+  <!-- row -->
+</div>
