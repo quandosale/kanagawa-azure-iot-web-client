@@ -44,6 +44,7 @@
     // outline: 1px blue solid;
     width: 70px;
     margin-right: 40px;
+    margin-top: -5px;
     float: left;
     border-bottom: 3px #000 solid;
   }
@@ -250,6 +251,24 @@ select.selectpicker {
   }
 }
 
+.gateway-search {
+  cursor: not-allowed;
+  &.isGatewayFilter {
+    cursor: default;
+  }
+}
+
+.user-search {
+  cursor: not-allowed;
+  &.isUserFilter {
+    cursor: default;
+  }
+}
+
+.calendar {
+  margin-top: 10px;
+}
+
 .select-group {
   border: 1px solid #c2cfd6;
   height: 120px;
@@ -257,9 +276,18 @@ select.selectpicker {
   .select-item {
     line-height: 20px;
     padding-left: 10px;
-    cursor: pointer;
-    &:hover {
-      font-weight: bold;
+    cursor: not-allowed;
+    &.isSelected {
+      color: red;
+    }
+  }
+  &.isGatewayFilter,
+  &.isUserFilter {
+    .select-item {
+      cursor: pointer;
+      &:hover {
+        font-weight: bold;
+      }
     }
   }
 }

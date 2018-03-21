@@ -32,7 +32,7 @@ export class MyCalendarComponent implements OnInit, AfterViewInit {
     clickday: Date;
     @Output() dayClickedEvent = new EventEmitter();
     week = false;
-    type = 'all';
+    type = 'month';
     disableIncreate = true;
     activeDayIsOpen = false;
     constructor() { }
@@ -55,6 +55,7 @@ export class MyCalendarComponent implements OnInit, AfterViewInit {
     }
     setCalendarType(type: string) {
         this.type = type;
+        console.log('this.type', this.type);
     }
     update(): void {
         this.year = this.viewDate.getFullYear() + '';

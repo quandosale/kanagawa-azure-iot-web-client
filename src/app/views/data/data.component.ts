@@ -22,9 +22,12 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
   DataWithDate: Array<any> = [];
   items = ['Month', 'Week', 'Day'];
   selectedDate: Date;
-  selectedCalendarType = 'month'; // all
+  defaultSelectedCalendarType = 'Month'; // all
+  selectedCalendarType = 'Month'; // all
+  searchGateway = '';
+  searchUser = '';
   // selectedPatient = 'all';
-  selectedDataType = '-1'; // all
+
   @ViewChild(MyCalendarComponent) myCalendarComponent = new MyCalendarComponent();
   datefrom: number = -1;
   dateto: number = -1;
@@ -59,8 +62,7 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
   noData = false;
 
   isMonthFilter = false;
-  isExercise = true;
-  isSleep = true;
+
   strStorageUsed = '0 KB';
   isLoadStorage = true;
 
@@ -125,8 +127,6 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
     // }
     const prevDataFilter = this.sharedService.getDataFilter();
     this.isMonthFilter = prevDataFilter.isMonthFilter;
-    this.isExercise = prevDataFilter.isExercise;
-    this.isSleep = prevDataFilter.isSleep;
 
     this.DataForDisplay = this.sharedService.getDataList();
     // if (this.DataForDisplay.length === 0) {
@@ -136,7 +136,8 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
     // }
   }
   gateways = [];
-  selectedGateway = {};
+  selectedGateway: any;
+  selectedGatewayDevices = [];
   getGateways() {
     this.gateways = [];
     this.gatewayService.getGateways().subscribe(res => {
@@ -151,9 +152,17 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
 
     })
   }
-  onTapGateway(gateway) {
-    console.log(gateway)
+  onSelectGateway(gateway) {
+    if (!this.isGatewayFilter) return;
     this.selectedGateway = gateway;
+    this.selectedGatewayDevices = gateway.devices;
+    this.filterData();
+  }
+  selectedDevice: any;
+  onSelectDevice(device) {
+    if (!this.isUserFilter) return;
+    this.selectedDevice = device;
+    this.filterData();
   }
   ngAfterViewInit() {
     const tab2 = $(this.elNode.nativeElement).find('#tab2info');
@@ -164,7 +173,7 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   ngOnDestroy() {
     this.sharedService.setDataList(this.DataForDisplay);
-    this.sharedService.setDataFilter(this.isMonthFilter, this.isExercise, this.isSleep);
+    this.sharedService.setDataFilter(this.isMonthFilter, '', '');
     console.log('destory');
   }
   onTapSort() {
@@ -380,21 +389,22 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setDateRange() {
-    if (this.selectedCalendarType === 'day') {
+    console.log('setDateRange', this.selectedCalendarType.toLocaleLowerCase())
+    if (this.selectedCalendarType.toLocaleLowerCase() === 'day') {
       this.datefrom = this.selectedDate.setHours(0, 0, 0, 0);
       this.dateto = this.selectedDate.setHours(23, 59, 59, 999);
       this.datefrom = new Date(this.datefrom).getTime();
       this.dateto = new Date(this.dateto).getTime();
 
     }
-    if (this.selectedCalendarType === 'month') {
+    if (this.selectedCalendarType.toLocaleLowerCase() === 'month') {
       const date = this.selectedDate;
 
       this.datefrom = new Date(date.getFullYear(), date.getMonth(), 1).setHours(0, 0, 0, 0);
       this.dateto = new Date(date.getFullYear(), date.getMonth() + 1, 0).setHours(23, 59, 59, 999);
 
     }
-    if (this.selectedCalendarType === 'week') {
+    if (this.selectedCalendarType.toLocaleLowerCase() === 'week') {
       const dTmp = this.selectedDate; // get current date
       const first = dTmp.getDate() - dTmp.getDay(); // First day is the day of the month - the day of the week
       const last = first + 6; // last day is the first day + 6
@@ -428,10 +438,11 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
 
   dayClicked(date: Date): void {
     this.selectedDate = date;
-    if (this.selectedCalendarType === 'month' && this.isMonthFilter) {
-      this.setDateRange();
-      this.filterData();
-    }
+    if (!this.isMonthFilter) return;
+    // if (this.selectedCalendarType.toLocaleLowerCase() === 'month') {
+    this.setDateRange();
+    this.filterData();
+    // }
   }
 
   onPatientSelected(value: string): void {
@@ -440,17 +451,7 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.getDatas();
   }
 
-  onDataTypeSelected(value: string): void {
-    this.selectedDataType = value;
-    this.sharedService.setDataType(value);
-    console.log('datatype', value);
-    if (this.selectedDataType === '-1') {
-      this.getDatas();
-    } else {
-      this.filterData();
-    }
-  }
-  tapFilter() {
+  tapDateFilter() {
 
     if (this.isMonthFilter) {
       this.setDateRange();
@@ -458,48 +459,72 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
       this.datefrom = -1;
       this.dateto = -1;
     }
-
-    if (this.isExercise) {
-      this.selectedDataType = '0';
-    }
-    if (this.isSleep) {
-      this.selectedDataType = '1';
-    }
-
-    if (this.isExercise && this.isSleep) {
-      this.selectedDataType = '-1';
-    }
-    if (!this.isExercise && !this.isSleep) {
-      this.selectedDataType = '-2'; // display none;
-      // console.log('monthfilter', this.isMonthFilter, 'exercise', this.isExercise, 'sleep', this.isSleep)
-      // console.log(this.selectedDataType)
-      this.DataForDisplay = [];
-      return;
-    }
-    console.log('monthfilter', this.isMonthFilter, 'exercise', this.isExercise, 'sleep', this.isSleep);
-    console.log(this.selectedDataType);
     this.filterData();
   }
   filterData() {
-    const datatype = parseInt(this.selectedDataType, 10);
     if (this.Data === undefined || this.Data === null) { return; }
     if (this.Data.length === 0) { return; }
 
     // console.log('filterData', this.Data.length);
-    this.DataForDisplay = [];
+    let DataFilteredDate = [];
     const count = this.Data.length;
-    console.log('data count', count);
+
     for (let i = 0; i < count; i++) {
       const dataItem = this.Data[i];
       if (this.datefrom === -1 && this.dateto === -1) {
-        this.DataForDisplay.push(dataItem);
+        DataFilteredDate.push(dataItem);
       } else if (dataItem.start >= this.datefrom && dataItem.start < this.dateto) {
-        this.DataForDisplay.push(dataItem);
+        DataFilteredDate.push(dataItem);
       }
     }
+    console.log('selectedGateway', this.selectedGateway, this.selectedDevice);
+    if (this.selectedGateway != null) {
+      let DataFilteredGateway = [];
+
+      DataFilteredDate.forEach((dataset, index) => {
+        if (dataset.gatewayId._id === this.selectedGateway._id) {
+          DataFilteredGateway.push(dataset);
+        }
+      });
+
+      if (this.selectedDevice != null) {
+        let DataFilteredDevice = [];
+
+        DataFilteredGateway.forEach((dataset, index) => {
+          if (dataset.deviceId._id === this.selectedDevice._id) {
+            DataFilteredDevice.push(dataset);
+          }
+        });
+
+        this.DataForDisplay = DataFilteredDevice;
+      } else {
+        this.DataForDisplay = DataFilteredGateway;
+      }
+
+    } else {
+      this.DataForDisplay = DataFilteredDate;
+    }
+
     this._sortDate();
   }
-
+  tapGatewayFilter() {
+    if (this.isGatewayFilter) {
+      this.selectedGateway = null;
+      this.selectedGatewayDevices = [];
+    } else {
+      this.selectedGateway = null;
+      this.selectedGatewayDevices = [];
+    }
+    this.filterData();
+  }
+  tapDeviceFilter() {
+    if (this.isUserFilter) {
+      this.selectedDevice = {};
+    } else {
+      this.selectedDevice = {};
+    }
+    this.filterData();
+  }
   showDetail(item) {
     console.log('click', item.datatype, item.datasetId);
     this.sharedService.setSelectedDataSet(item);
@@ -540,9 +565,22 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
     } else { hoursStr = '' + x; }
     return hoursStr + ':' + minsStr + ':' + secsStr;
   }
+
   onCalendarTypeSelected(value) {
     console.log(value)
     let strValue = value + '';
     this.myCalendarComponent.setCalendarType(strValue.toLocaleLowerCase());
   }
+
+  checkSearchGateway(gateway) {
+    if (gateway == null) return false;
+    if (gateway.name == null) return false;
+    return gateway.name.toLocaleLowerCase().includes(this.searchGateway.toLocaleLowerCase())
+  }
+  checkSearchDevice(device) {
+    if (device == null) return false;
+    if (device.name == null) return false;
+    return device.name.toLocaleLowerCase().includes(this.searchUser.toLocaleLowerCase())
+  }
+
 }
