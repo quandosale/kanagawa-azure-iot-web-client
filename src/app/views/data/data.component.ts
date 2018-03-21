@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { DataService, Dataset, SharedService } from '../../services/index';
+import { DataService, Dataset, SharedService, GatewayService } from '../../services/index';
 import { Subject } from 'rxjs/Subject';
 import { MyCalendarComponent } from 'app/components/';
 
@@ -19,12 +19,13 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
   patientsName: Array<string>;
   Data: Array<any> = [];
   DataForDisplay: Array<any> = [];
-
+  DataWithDate: Array<any> = [];
+  items = ['Month', 'Week', 'Day'];
   selectedDate: Date;
   selectedCalendarType = 'month'; // all
   // selectedPatient = 'all';
   selectedDataType = '-1'; // all
-
+  @ViewChild(MyCalendarComponent) myCalendarComponent = new MyCalendarComponent();
   datefrom: number = -1;
   dateto: number = -1;
 
@@ -32,8 +33,26 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedPatientData: any = {};
 
   m_limit = -1;
-  sortUp = false;
-
+  sortUpDate = false;
+  sortUpUser = false;
+  sortUpRoom = false;
+  sortUpDuration = false;
+  onTapSortDate() {
+    this.sortUpDate = !this.sortUpDate;
+    this._sortDate();
+  }
+  onTapSortUser() {
+    this.sortUpUser = !this.sortUpUser;
+    this._sortUser();
+  }
+  onTapSortRoom() {
+    this.sortUpRoom = !this.sortUpRoom;
+    this._sortRoom();
+  }
+  onTapSortDuration() {
+    this.sortUpDuration = !this.sortUpDuration;
+    this._sortDuration();
+  }
   sizeSubject: Subject<any>;
   preMilli = { year: -1, month: -1, day: -1 };
   message = 'No data';
@@ -49,7 +68,7 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
   isUserFilter = false;
   constructor(private dataService: DataService,
     private sharedService: SharedService,
-
+    private gatewayService: GatewayService,
     private router: Router,
 
     public elNode: ElementRef,
@@ -112,8 +131,29 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
     this.DataForDisplay = this.sharedService.getDataList();
     // if (this.DataForDisplay.length === 0) {
     this.getDatas();
+    this.getGateways();
     // this.initData();
     // }
+  }
+  gateways = [];
+  selectedGateway = {};
+  getGateways() {
+    this.gateways = [];
+    this.gatewayService.getGateways().subscribe(res => {
+      // this.gateways = res.gateways;
+      console.log(res.gateways);
+      for (let i = 0; i < res.gateways.length; i++) {
+        const gateway_item = res.gateways[i];
+        if (gateway_item.isApprove) {
+          this.gateways.push(gateway_item);
+        }
+      }
+
+    })
+  }
+  onTapGateway(gateway) {
+    console.log(gateway)
+    this.selectedGateway = gateway;
   }
   ngAfterViewInit() {
     const tab2 = $(this.elNode.nativeElement).find('#tab2info');
@@ -128,27 +168,84 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('destory');
   }
   onTapSort() {
-    this.sortUp = !this.sortUp;
-    this._sort();
+    this.sortUpDate = !this.sortUpDate;
+    this._sortDate();
   }
-  _sort() {
+  _sortDate() {
     this.DataForDisplay.sort((a: any, b: any) => {
-      if (this.sortUp) {
+      if (this.sortUpDate) {
         return a.start - b.start;
       } else {
         return b.start - a.start;
       }
     });
+
+    this.makeDataWithDate();
+  }
+  _sortUser() {
+    this.DataForDisplay.sort((a: any, b: any) => {
+      if (this.sortUpUser) {
+        if (a.deviceId.name > b.deviceId.name) return 1;
+        if (a.deviceId.name === b.deviceId.name) return 0;
+        if (a.deviceId.name < b.deviceId.name) return -1;
+      } else {
+        if (a.deviceId.name > b.deviceId.name) return -1;
+        if (a.deviceId.name === b.deviceId.name) return 0;
+        if (a.deviceId.name < b.deviceId.name) return 1;
+      }
+    });
+
+    this.makeDataWithDate();
+  }
+  _sortRoom() {
+
+    this.DataForDisplay.sort((a: any, b: any) => {
+      if (this.sortUpRoom) {
+        if (a.gatewayId.name > b.gatewayId.name) return 1;
+        if (a.gatewayId.name === b.gatewayId.name) return 0;
+        if (a.gatewayId.name < b.gatewayId.name) return -1;
+      } else {
+        if (a.gatewayId.name > b.gatewayId.name) return -1;
+        if (a.gatewayId.name === b.gatewayId.name) return 0;
+        if (a.gatewayId.name < b.gatewayId.name) return 1;
+      }
+    });
+    this.makeDataWithDate();
+  }
+  _sortDuration() {
+    this.DataForDisplay.sort((a: any, b: any) => {
+      if (this.sortUpDate) {
+        return a.duration - b.duration;
+      } else {
+        return b.duration - a.duration;
+      }
+    });
+
+    this.makeDataWithDate();
+  }
+  makeDataWithDate() {
+    this.DataWithDate = [];
+    this.preMilli = { year: -1, month: -1, day: -1 };
     this.DataForDisplay.forEach((dataset, index) => {
-      dataset.isFirst = this.isFirst(new Date(dataset.start));
+      let isFirst = this.isFirst(new Date(dataset.start));
+      if (isFirst) {
+        let datasetDate: any = {};
+        datasetDate.time = dataset.datetime;
+        datasetDate.gatewayId = {};
+        datasetDate.deviceId = {};
+
+        this.DataWithDate.push(datasetDate);
+        this.DataWithDate.push(dataset);
+      } else {
+        this.DataWithDate.push(dataset);
+      }
     });
   }
-
   transform(data: any): any {
     const dataset = data;
     dataset.datetime = this.datetimeToDate(new Date(dataset.start));
     dataset.time = this.datetimeToTime(new Date(dataset.start));
-    dataset.isFirst = this.isFirst(new Date(dataset.start));
+    dataset.duration = dataset.duration >= 0 ? dataset.duration : 0;
     dataset.durationStr = this.durationFormat(dataset.duration);
 
     const type: Number = dataset.datatype;
@@ -394,20 +491,13 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('data count', count);
     for (let i = 0; i < count; i++) {
       const dataItem = this.Data[i];
-      // console.log(dataItem, datatype, this.datefrom, this.dateto);
-      if (datatype !== -1) {
-        if (dataItem.datatype !== datatype) {
-          continue;
-        }
-      }
       if (this.datefrom === -1 && this.dateto === -1) {
         this.DataForDisplay.push(dataItem);
       } else if (dataItem.start >= this.datefrom && dataItem.start < this.dateto) {
         this.DataForDisplay.push(dataItem);
       }
-
     }
-    this._sort();
+    this._sortDate();
   }
 
   showDetail(item) {
@@ -450,7 +540,9 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
     } else { hoursStr = '' + x; }
     return hoursStr + ':' + minsStr + ':' + secsStr;
   }
-  onCalendarTypeSelected() {
-
+  onCalendarTypeSelected(value) {
+    console.log(value)
+    let strValue = value + '';
+    this.myCalendarComponent.setCalendarType(strValue.toLocaleLowerCase());
   }
 }

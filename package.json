@@ -42,6 +42,7 @@
     "moment": "2.19.1",
     "ng2-charts": "1.6.0",
     "ngx-bootstrap": "1.9.3",
+    "ngx-select-ex": "^3.4.0",
     "object-keys": "^1.0.11",
     "path": "^0.12.7",
     "request-interval": "^2.0.0",

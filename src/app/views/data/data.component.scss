@@ -133,12 +133,12 @@
     float: left;
     .c-row {
       cursor: pointer;
+      &.detail:nth-child(odd) {
+        background: #eeeeee;
+      }
+      &.detail:nth-child(even) {}
       .c-row-content {
         padding: 7px 0px;
-        &.detail:nth-child(odd) {
-          background: #eeeeee;
-        }
-        &.detail:nth-child(even) {}
       }
       &.more-btn-row:hover {
         background: transparent;

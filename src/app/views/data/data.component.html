@@ -17,8 +17,7 @@
           <div class="month-label" translate>Date</div>
         </div>
 
-        <select-calendar-type [selectedCalendarType]="selectedCalendarType"></select-calendar-type>
-
+        <ngx-select [items]="items" [disabled]="!isMonthFilter" [defaultValue]="selectedCalendarType" (select)="onCalendarTypeSelected($event)"></ngx-select>
 
         <div class="calendar">
           <my-calendar (dayClickedEvent)="dayClicked($event)"></my-calendar>
@@ -32,14 +31,13 @@
         </div>
 
         <div class="input-group">
-          <input class="form-control" placeholder="Room 1">
+          <input class="form-control" placeholder="Room 1" [attr.disabled]="isGatewayFilter?null:''">
           <div class="input-group-addon">
             <i class="fa fa-search"></i>
           </div>
         </div>
         <div class="select-group gateway-select">
-          <div class="select-item gateway-item">Room 1</div>
-          <div class="select-item gateway-item">Room 2</div>
+          <div class="select-item gateway-item" *ngFor="let item of gateways;let index = index" (click)="onTapGateway(item)">{{item.name}}</div>
         </div>
 
         <div class="month-section clearfix">
@@ -51,15 +49,14 @@
         </div>
 
         <div class="input-group">
-          <input class="form-control" placeholder="Steven">
+          <input class="form-control" placeholder="Steven" [attr.disabled]="isUserFilter?null:''">
           <div class="input-group-addon">
             <i class="fa fa-search"></i>
           </div>
         </div>
 
         <div class="select-group gateway-select">
-          <div class="select-item gateway-item">Room 1</div>
-          <div class="select-item gateway-item">Room 2</div>
+          <div class="select-item gateway-item" *ngFor="let item of selectedGateway.devices;let index = index">{{item.name}}</div>
         </div>
       </div>
     </div>
@@ -70,43 +67,38 @@
     <div class="row">
       <div class="header col-12">
         <div class="header-content row">
-          <div class="col-sm-4" translate>
+          <div class="col-sm-4" (click)="onTapSortDate()" translate>
             Date / Time
-            <img *ngIf="sortUp" src="assets/img/sort-up.png" class="sort">
-            <img *ngIf="!sortUp" src="assets/img/sort-down.png" class="sort">
+            <img *ngIf="sortUpDate" src="assets/img/sort-up.png" class="sort">
+            <img *ngIf="!sortUpDate" src="assets/img/sort-down.png" class="sort">
           </div>
-          <div class="col-sm-2 text-center" style="outline:1px red sold;" (click)="onTapSort()" translate>
+          <div class="col-sm-2 text-center" style="outline:1px red sold;" (click)="onTapSortUser()" translate>
             User
-            <img *ngIf="sortUp" src="assets/img/sort-up.png" class="sort">
-            <img *ngIf="!sortUp" src="assets/img/sort-down.png" class="sort">
+            <img *ngIf="sortUpUser" src="assets/img/sort-up.png" class="sort">
+            <img *ngIf="!sortUpUser" src="assets/img/sort-down.png" class="sort">
           </div>
-          <div class="col-sm-2 text-center" style="outline:1px red sold;" (click)="onTapSort()" translate>
+          <div class="col-sm-2 text-center" style="outline:1px red sold;" (click)="onTapSortRoom()" translate>
             Room
-            <img *ngIf="sortUp" src="assets/img/sort-up.png" class="sort">
-            <img *ngIf="!sortUp" src="assets/img/sort-down.png" class="sort">
+            <img *ngIf="sortUpRoom" src="assets/img/sort-up.png" class="sort">
+            <img *ngIf="!sortUpRoom" src="assets/img/sort-down.png" class="sort">
           </div>
-          <div class="col-sm-4 text-center" style="outline:1px red sold;" (click)="onTapSort()" translate>
+          <div class="col-sm-4 text-center" style="outline:1px red sold;" (click)="onTapSortDuration()" translate>
             Duration
-            <img *ngIf="sortUp" src="assets/img/sort-up.png" class="sort">
-            <img *ngIf="!sortUp" src="assets/img/sort-down.png" class="sort">
+            <img *ngIf="sortUpDuration" src="assets/img/sort-up.png" class="sort">
+            <img *ngIf="!sortUpDuration" src="assets/img/sort-down.png" class="sort">
           </div>
         </div>
       </div>
       <div class="content col-12">
 
-        <div class="c-row" *ngFor="let item of DataForDisplay;let index = index" (click)="showDetail(item)">
-          <div class="c-row-content row" *ngIf="item.isFirst">
-            <div class="col-12">
-              {{item.datetime}}
-            </div>
-          </div>
+        <div class="c-row" *ngFor="let item of DataWithDate;let index = index" (click)="showDetail(item)">
           <!-- ./row For Date -->
           <div class="c-row-content detail row">
             <div class="col-sm-4">
               <div>{{item.time}}</div>
             </div>
-            <div class="col-sm-2 text-center">{{item.gatewayId}}</div>
-            <div class="col-sm-2 text-center">{{item.deviceId}}</div>
+            <div class="col-sm-2 text-center">{{item.deviceId.name}}</div>
+            <div class="col-sm-2 text-center">{{item.gatewayId.name}}</div>
             <div class="col-sm-4 text-center">
               {{item.durationStr}}
             </div>
