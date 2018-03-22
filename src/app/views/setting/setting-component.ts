@@ -7,13 +7,6 @@ import { SharedService, AlarmSetting } from 'app/services';
     styleUrls: ['./setting-component.scss']
 })
 export class SettingComponent implements OnInit {
-    // isAlarmSensorOff = false;
-    // isSensorSound = false;
-    // isSensorFlash = false;
-
-    // isAlarmDisconnect = false;
-    // isDisconnectSound = false;
-    // isDisconnectFlash = false;
 
     setting: AlarmSetting = new AlarmSetting();
     constructor(private sharedService: SharedService) { }
@@ -22,30 +15,35 @@ export class SettingComponent implements OnInit {
         this.setting = this.sharedService.getAlarmSetting();
     }
     onSwitchSensorOff() {
-        // this.setting.isAlarmSensorOff = this.isAlarmSensorOff;
         this.sharedService.setAlarmSetting(this.setting);
     }
 
     onSwitchSensorSound() {
-        // this.setting.isSensorSound = this.isSensorSound;
         this.sharedService.setAlarmSetting(this.setting);
     }
     onSwitchSensorFlash() {
-        // this.setting.isSensorFlash = this.isSensorFlash;
         this.sharedService.setAlarmSetting(this.setting);
     }
 
     // disconnect
     onSwitchDisconnect() {
-        // this.setting.isAlarmDisconnect = this.isAlarmDisconnect;
         this.sharedService.setAlarmSetting(this.setting);
     }
     onSwitchDisconnectSound() {
-        // this.setting.isDisconnectSound = this.isDisconnectSound;
         this.sharedService.setAlarmSetting(this.setting);
     }
     onSwitchDisconnectFlash() {
-        // this.setting.isDisconnectFlash = this.isDisconnectFlash;
+        this.sharedService.setAlarmSetting(this.setting);
+    }
+
+     // Posture
+     onSwitchPosture() {
+        this.sharedService.setAlarmSetting(this.setting);
+    }
+    onSwitchPostureSound() {
+        this.sharedService.setAlarmSetting(this.setting);
+    }
+    onSwitchPostureFlash() {
         this.sharedService.setAlarmSetting(this.setting);
     }
 }

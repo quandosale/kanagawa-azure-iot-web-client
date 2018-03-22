@@ -16,7 +16,6 @@ Alarms
 
       </div>
       <div class="card-body">
-        <!-- [BEGIN steven] -->
         <div class="form-check mb-2 mr-sm-2 mb-sm-0">
           <label class="form-check-label">
             <input class="form-check-input" type="checkbox" [(ngModel)]="setting.isSensorSound" (change)="onSwitchSensorSound()" [attr.disabled]="!setting.isAlarmSensorOff?'':null"> Play Sound
@@ -42,7 +41,6 @@ Alarms
 
       </div>
       <div class="card-body">
-        <!-- [BEGIN steven] -->
         <div class="form-check mb-2 mr-sm-2 mb-sm-0">
           <label class="form-check-label">
             <input class="form-check-input" type="checkbox" [(ngModel)]="setting.isDisconnectSound" (change)="onSwitchDisconnectSound()" [attr.disabled]="!setting.isAlarmDisconnect?'':null"> Play Sound
@@ -51,6 +49,30 @@ Alarms
         <div class="form-check mb-2 mr-sm-2 mb-sm-0">
           <label class="form-check-label">
             <input class="form-check-input" type="checkbox" [(ngModel)]="setting.isDisconnectFlash" (change)="onSwitchDisconnectFlash()" [attr.disabled]="!setting.isAlarmDisconnect?'':null"> Flash Icon
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="card card-default">
+      <div class="card-header">
+        Posture Alarm
+        <span class="form-group">
+          <span class="switch switch-sm">
+            <input type="checkbox" class="switch" id="switch-sm3" [(ngModel)]="setting.isAlarmPosture" (change)="onSwitchPosture()">
+            <label for="switch-sm3"></label>
+          </span>
+        </span>
+
+      </div>
+      <div class="card-body">
+        <div class="form-check mb-2 mr-sm-2 mb-sm-0">
+          <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="setting.isPostureSound" (change)="onSwitchPostureSound()" [attr.disabled]="!setting.isAlarmPosture?'':null"> Play Sound
+          </label>
+        </div>
+        <div class="form-check mb-2 mr-sm-2 mb-sm-0">
+          <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="setting.isPostureFlash" (change)="onSwitchPostureFlash()" [attr.disabled]="!setting.isAlarmPosture?'':null"> Flash Icon
           </label>
         </div>
       </div>

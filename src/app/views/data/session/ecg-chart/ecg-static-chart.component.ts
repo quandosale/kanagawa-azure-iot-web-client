@@ -135,6 +135,7 @@ export class EcgStaticChartComponent implements OnInit, AfterViewInit, OnDestroy
     };
     xhr.onprogress = function (e) {
       self.percent = `${Math.floor(100 * e.loaded / e.total)} %`;
+      console.log(self.percent);
     };
     xhr.open('GET', url);
     xhr.send();
@@ -142,13 +143,7 @@ export class EcgStaticChartComponent implements OnInit, AfterViewInit, OnDestroy
 
   unit8ArrTo16Arr(arrByte: ArrayBuffer, isRow: boolean) {
     const arr = new Uint8Array(arrByte);
-    // const length = arr.byteLength;
     const result = MitBit.buffer12ToArray(arr);
-    // for (let i = 0; i < length / 2; i++) {
-    //   let item = (arr[i * 2]) + ((arr[i * 2 + 1]) * 256);
-    //   if (isRow) { item = item * 2400 / 4096; }
-    //   result.push(item);
-    // }
     console.log(result)
     return result;
   }

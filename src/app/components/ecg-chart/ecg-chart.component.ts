@@ -14,6 +14,7 @@ declare let $: any;
 
 export class EcgChartComponent implements OnInit, OnDestroy {
   @ViewChild('canvas') canvas: any;
+  @Output() statusChanged = new EventEmitter<boolean>();
   context: CanvasRenderingContext2D;
   width: number;
   height: number;
@@ -26,7 +27,7 @@ export class EcgChartComponent implements OnInit, OnDestroy {
   PLOT_HEIGHT = 4096;
   intervalID;
   speed = 3;
-  drawingInterval = 50;
+  DRAW_INTERVAL = 50;
   pointsPerInterval;
 
   oneWindow = 240;
@@ -41,12 +42,25 @@ export class EcgChartComponent implements OnInit, OnDestroy {
     this.initCanvas();
 
     this.drawingWidth = this.oneWindow * this.windowCount;
-    this.speed = (this.width / (1000 / this.drawingInterval)) / this.windowCount;
-    this.pointsPerInterval = this.oneWindow / (1000 / this.drawingInterval);
+    this.speed = (this.width / (1000 / this.DRAW_INTERVAL)) / this.windowCount;
+    this.pointsPerInterval = this.oneWindow / (1000 / this.DRAW_INTERVAL);
 
-    this.intervalID = requestInterval(this.drawingInterval, () => {
+    this.intervalID = requestInterval(this.DRAW_INTERVAL, () => {
       this.drawLine();
     });
+    setInterval(() => {
+      if (this.data.length > 0) {
+        if (!this.preStatus) {
+          this.statusChanged.emit(true);
+        }
+        this.preStatus = true;
+      } else {
+        if (this.preStatus) {
+          this.statusChanged.emit(false);
+        }
+        this.preStatus = false;
+      }
+    }, 1000);
   }
 
   initCanvas() {
@@ -57,11 +71,12 @@ export class EcgChartComponent implements OnInit, OnDestroy {
     this.height = this.canvas.nativeElement.height;
     this.cy = this.py = this.height / 2;
   }
-
+  preStatus = false;
   drawLine() {
     this.context.clearRect(Math.ceil(this.px), 0, this.scanBarWidth, this.height);
 
     this.context.beginPath();
+
     for (let i = 0; i < this.pointsPerInterval; i++) {
       if (this.data.length > 0) {
         this.cy = this.height - (this.data[0] + 50) * (this.height / this.PLOT_HEIGHT);

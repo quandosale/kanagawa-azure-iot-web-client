@@ -19,13 +19,14 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
 
   heartrate = 0;
   isSensor = false;
-  battery = 0;
+  battery = -1;
   temperature = 0;
   posture = -1;
   rssi = -1000;
   rssiImageSrc = 'assets/img/rssi-no.png';
   postureImageSrc = 'assets/img/user-what-red.png';
 
+  isFlashDisconnected = false;
   setting: AlarmSetting = new AlarmSetting();
 
   constructor(
@@ -33,16 +34,16 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
     private sharedService: SharedService,
     private dataService: DataService) { }
   isRecord = false;
+  preIsSensor = false;
   ngOnInit() {
 
     this.setting = this.sharedService.getAlarmSetting();
-
+    this.postureImageSrc = this.getPostureImg();
     this.recordDataset = this.sharedService.getRecordingStatus(this.device._id);
     this.isRecord = this.device.isRecord;
     if (this.recordDataset == null && this.isRecord) {
       // this.isRecord = false;
     }
-
 
     this.iotSubscription = this.iotService.dataListner().subscribe(data => {
       if (data.emitter_mac === this.device.mac) {
@@ -50,9 +51,14 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
         this.ecgChartComponent.push(data.ecg);
         this.heartrate = data.heartrate.length > 0 ? data.heartrate[0] : 0;
         this.isSensor = data.isSensor;
+
         if (!this.isSensor) {
-          this.playAudioSensor();
+          if (this.preIsSensor) {
+            this.playAudioSensor();
+          }
         }
+        this.preIsSensor = this.isSensor;
+
         this.temperature = data.temperature;
         this.battery = data.battery / 10;
         this.posture = data.posture;
@@ -67,7 +73,7 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
             this.postureImageSrc = 'assets/img/user-walk.png';
             break;
           default:
-            this.postureImageSrc = 'assets/img/user-what-red.png';
+            this.postureImageSrc = this.getPostureImg();
         }
         this.rssi = data.rssi;
         this.rssi = Math.round(100 * (127 + this.rssi) / (127 + 20));
@@ -91,6 +97,28 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
     //   this.simulate();
     // });
   }
+  soundPosture() {
+    if (!this.setting.isAlarmPosture) {
+      return;
+    }
+    if (!this.setting.isPostureSound) {
+      return;
+    }
+    const audio = new Audio();
+    audio.src = 'assets/mp3/2.mp3';
+    audio.load();
+    audio.play();
+  }
+  getPostureImg(): string {
+    if (!this.setting.isAlarmPosture) {
+      return 'assets/img/user-what.png';
+    }
+    if (!this.setting.isPostureFlash) {
+      return 'assets/img/user-what.png';
+    }
+    return 'assets/img/user-what-red.png';
+  }
+
   recordDataset: Dataset;
   onSwitchRecord() {
     if (this.isRecord) {
@@ -154,5 +182,22 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
     audio.load();
     audio.play();
   }
-
+  flashDisconnect() {
+    if (!this.setting.isAlarmDisconnect) {
+      return;
+    }
+    if (!this.setting.isDisconnectFlash) {
+      return;
+    }
+    this.isFlashDisconnected = true;
+  }
+  statusChanged(isConnected: number) {
+    console.log(isConnected);
+    if (!isConnected) {
+      this.playAudioDisconnect();
+      this.flashDisconnect();
+    } else {
+      this.isFlashDisconnected = false;
+    }
+  }
 }

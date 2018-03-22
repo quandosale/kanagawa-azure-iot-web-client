@@ -6,4 +6,8 @@ export class AlarmSetting {
     isAlarmDisconnect = false;
     isDisconnectSound = false;
     isDisconnectFlash = false;
+
+    isAlarmPosture = false;
+    isPostureSound = false;
+    isPostureFlash = false;
 }

@@ -63,7 +63,7 @@ export class HeartRateChartComponent implements OnInit, AfterViewInit {
     this.getStorageFile(true);
   }
   getStorageFile(isInflate: boolean) {
-    const url = `${environment.API_URL}/dataset/download/${this.selectedDataSet.file}${FileType.HEART_RATE}`;
+    const url = `${environment.API_URL}/dataset/download/${this.selectedDataSet.file}${FileType.HEART_RATE_EN}`;
     this.downloadFileWithInflate(url);
 
   }
@@ -100,9 +100,6 @@ export class HeartRateChartComponent implements OnInit, AfterViewInit {
     const self = this;
     xhr.onload = function (event) {
       const blob: ArrayBuffer = xhr.response;
-      // console.warn(blob)
-      // const duration = new Date().getTime() - self.downStart;
-      // const lineCount = (blob.match(/\n/g) || []).length;
       self.isBusy = false;
       self.anaylsysDataBinayry(blob);
     };
