@@ -9,7 +9,7 @@ Alarms
         Sensor Off Alarm
         <span class="form-group">
           <span class="switch switch-sm">
-            <input type="checkbox" class="switch" id="switch-sm" [(ngModel)]="isAlarmSensorOff" (change)="onSwitchSensorOff()">
+            <input type="checkbox" class="switch" id="switch-sm" [(ngModel)]="setting.isAlarmSensorOff" (change)="onSwitchSensorOff()">
             <label for="switch-sm"></label>
           </span>
         </span>
@@ -19,12 +19,12 @@ Alarms
         <!-- [BEGIN steven] -->
         <div class="form-check mb-2 mr-sm-2 mb-sm-0">
           <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" [(ngModel)]="isSensorSound" (change)="onSwitchSensorSound()" [attr.disabled]="!isAlarmSensorOff?'':null"> Play Sound
+            <input class="form-check-input" type="checkbox" [(ngModel)]="setting.isSensorSound" (change)="onSwitchSensorSound()" [attr.disabled]="!setting.isAlarmSensorOff?'':null"> Play Sound
           </label>
         </div>
         <div class="form-check mb-2 mr-sm-2 mb-sm-0">
           <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" [(ngModel)]="isSensorFlash" (change)="onSwitchSensorFlash()" [attr.disabled]="!isAlarmSensorOff?'':null"> Flash Icon
+            <input class="form-check-input" type="checkbox" [(ngModel)]="setting.isSensorFlash" (change)="onSwitchSensorFlash()" [attr.disabled]="!setting.isAlarmSensorOff?'':null"> Flash Icon
           </label>
         </div>
       </div>
@@ -35,7 +35,7 @@ Alarms
         Disconnect Alarm
         <span class="form-group">
           <span class="switch switch-sm">
-            <input type="checkbox" class="switch" id="switch-sm2" [(ngModel)]="isAlarmDisconnect" (change)="onSwitchDisconnect()">
+            <input type="checkbox" class="switch" id="switch-sm2" [(ngModel)]="setting.isAlarmDisconnect" (change)="onSwitchDisconnect()">
             <label for="switch-sm2"></label>
           </span>
         </span>
@@ -45,12 +45,12 @@ Alarms
         <!-- [BEGIN steven] -->
         <div class="form-check mb-2 mr-sm-2 mb-sm-0">
           <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" [(ngModel)]="isDisconnectSound" (change)="onSwitchDisconnectSound()" [attr.disabled]="!isAlarmDisconnect?'':null"> Play Sound
+            <input class="form-check-input" type="checkbox" [(ngModel)]="setting.isDisconnectSound" (change)="onSwitchDisconnectSound()" [attr.disabled]="!setting.isAlarmDisconnect?'':null"> Play Sound
           </label>
         </div>
         <div class="form-check mb-2 mr-sm-2 mb-sm-0">
           <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" [(ngModel)]="isDisconnectFlash" (change)="onSwitchDisconnectFlash()" [attr.disabled]="!isAlarmDisconnect?'':null"> Flash Icon
+            <input class="form-check-input" type="checkbox" [(ngModel)]="setting.isDisconnectFlash" (change)="onSwitchDisconnectFlash()" [attr.disabled]="!setting.isAlarmDisconnect?'':null"> Flash Icon
           </label>
         </div>
       </div>

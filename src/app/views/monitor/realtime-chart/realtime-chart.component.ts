@@ -24,7 +24,7 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
   posture = -1;
   rssi = -1000;
   rssiImageSrc = 'assets/img/rssi-no.png';
-  postureImageSrc = 'assets/img/user-what.png';
+  postureImageSrc = 'assets/img/user-what-red.png';
 
   setting: AlarmSetting = new AlarmSetting();
 
@@ -67,7 +67,7 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
             this.postureImageSrc = 'assets/img/user-walk.png';
             break;
           default:
-            this.postureImageSrc = 'assets/img/user-what.png';
+            this.postureImageSrc = 'assets/img/user-what-red.png';
         }
         this.rssi = data.rssi;
         this.rssi = Math.round(100 * (127 + this.rssi) / (127 + 20));

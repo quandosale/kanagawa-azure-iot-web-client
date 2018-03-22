@@ -1,6 +1,7 @@
 export class MitBit {
     static buffer12ToArray(buf) {
         const arr_ecg = [];
+        if(buf == null)return arr_ecg;
         for (let i = 0; i < buf.length / 3; i++) {
             const byte1 = buf[i * 3 + 0];
             const byte2 = buf[i * 3 + 1];

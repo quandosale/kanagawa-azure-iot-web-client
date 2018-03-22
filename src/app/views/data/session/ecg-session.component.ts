@@ -82,6 +82,7 @@ export class EcgSessionComponent implements OnInit, OnDestroy {
     const self = this;
     xhr.onload = function (event) {
       const text = xhr.response;
+      console.log(text);
       self.anaylsysDataBinayry(text);
     };
     xhr.onprogress = function (e) {

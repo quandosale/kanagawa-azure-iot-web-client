@@ -141,7 +141,7 @@ export class EcgStaticChartComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   unit8ArrTo16Arr(arrByte: ArrayBuffer, isRow: boolean) {
-     const arr = new Uint8Array(arrByte);
+    const arr = new Uint8Array(arrByte);
     // const length = arr.byteLength;
     const result = MitBit.buffer12ToArray(arr);
     // for (let i = 0; i < length / 2; i++) {
