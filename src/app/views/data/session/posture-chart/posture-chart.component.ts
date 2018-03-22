@@ -1,30 +1,66 @@
 import { Component, Input, OnChanges, OnInit, EventEmitter } from '@angular/core';
-
+import { SharedService } from '../../../../services/index';
 import { ChartComponent, } from 'angular2-highcharts';
 import { ChartEvent } from 'angular2-highcharts/dist/ChartEvent';
+import { environment } from '../../../../../environments/environment';
+import { FileType } from '../../../../common/FileType';
 @Component({
   selector: 'posture-chart',
   templateUrl: './posture-chart.component.html',
   styleUrls: ['./posture-chart.component.css']
 })
 export class PostureChartComponent implements OnChanges, OnInit {
-  @Input() ecg: Number[];
+  // @Input() ecg: Number[];
 
   options: any;
   chart: ChartComponent = null;
   colors = ['#FFA47F', '#66A47F', '#0C337F', '#0CA400', '#0CA47F'];
+  selectedDataSet: any;
   ngOnInit() {
-    // console.log(this.options.series[0].data);
-    if (this.ecg == null) { return; }
-    if (this.ecg.length >= 6) {
-      const data = [];
-      for (let i = 0; i < 6; i++) {
-        data.push({ y: this.ecg[i], color: this.colors[i] });
-      }
-      this.options.series[0].data = data;
-    }
+    // if (this.ecg == null) { return; }
+    // if (this.ecg.length >= 6) {
+    //   const data = [];
+    //   for (let i = 0; i < 6; i++) {
+    //     data.push({ y: this.ecg[i], color: this.colors[i] });
+    //   }
+    //   this.options.series[0].data = data;
+    // }
+    this.selectedDataSet = this.sharedService.getSelectedDataSet();
+    this.getStorageFile(true);
   }
+  getStorageFile(isInflate: boolean) {
+    const url = `${environment.API_URL}/dataset/download/${this.selectedDataSet.file}${FileType.POSTURE}`;
+    this.downloadFileWithInflate(url);
 
+  }
+  downloadFileWithInflate(url) {
+    // This can be downloaded directly:
+    const xhr = new XMLHttpRequest();
+    xhr.responseType = 'text';
+    const self = this;
+    xhr.onload = function (event) {
+      const text = xhr.response;
+      self.anaylsysDataBinayry(text);
+    };
+    xhr.onprogress = function (e) {
+      // self.percent = `${Math.floor(100 * e.loaded / e.total)} %`;
+    };
+    xhr.open('GET', url);
+    xhr.send();
+  }
+  anaylsysDataBinayry(str) {
+    let arr1 = str.split('');
+    // console.warn("analysisData", arr.length, arr[7])
+
+    let numberArr = arr1.map(function (item) {
+      if (!isNaN(item))
+        return parseInt(item);
+      else return 0;
+    });
+    this.update(numberArr);
+    console.log('posture,', numberArr)
+
+  }
   ngOnChanges(changes: any) {
     if (this.chart) {
       // this.chart.series[0].setData(changes.ecg.currentValue);
@@ -35,7 +71,7 @@ export class PostureChartComponent implements OnChanges, OnInit {
     // console.log(this.chart);
   }
 
-  constructor() {
+  constructor(private sharedService: SharedService) {
     let self = this;
     this.options = {
       chart: {
@@ -115,38 +151,35 @@ export class PostureChartComponent implements OnChanges, OnInit {
         pointWidth: 36
       }]
     };
-
-    this.update()
   }
   posture = [];
 
-  update() {
-    const rand = Math.random() * 10 % this.colors.length;
-    const item = {
-      name: 'posture',
-      data: [
-        { y: 133, color: this.colors[rand] }],
-      pointWidth: 36
-    };
+  update(data) {
 
-    this.posture.push(item);
-    try {
-      if (this.chart != null) {
-        let dd = new EventEmitter<ChartEvent>();
-        this.chart.addSeries(item);
-        this.options.series = this.posture;
-        for (let i = 0; i < this.posture.length; i++) {
-          //   this.chart.series[i].setData(this.posture[i]);
+    for (var i = 0; i < data.length; i++) {
+      const rand = data[i] % this.colors.length;
+      const item = {
+        name: 'posture',
+        data: [
+          { y: 133, color: this.colors[rand] }],
+        pointWidth: 36
+      };
+
+      this.posture.push(item);
+      try {
+        if (this.chart != null) {
+          let dd = new EventEmitter<ChartEvent>();
+          this.chart.addSeries(item);
+          this.options.series = this.posture;
+          // for (let i = 0; i < this.posture.length; i++) {
+          //   //   this.chart.series[i].setData(this.posture[i]);
+          // }
+          this.chart.series[0].setData(item);
+          // this.chart.redraw(null);
         }
-        this.chart.series[0].setData(item);
-        // this.chart.redraw(null);
+      } catch (err) {
+        console.error(err);
       }
-    } catch (err) {
-      console.error(err);
     }
-    const self = this;
-    // setTimeout(() => {
-    //   self.update()
-    // }, 1000);
   }
 }

@@ -368,25 +368,7 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
 
     return result;
   }
-  // convert date to Formatted String
-  dateFormat(date: Date): String {
-    const dateTime = new Date(date);
-    const yyyy = dateTime.getFullYear();
-    const month = dateTime.getMonth() + 1;
-    const mm = (month / 10 >= 1) ? month : ('0' + month);
-    const day = dateTime.getDate();
-    const dd = (day / 10 >= 1) ? day : ('0' + day);
 
-    const hour = dateTime.getHours();
-    const hh = (hour / 10 >= 1) ? hour : ('0' + hour);
-    const minute = dateTime.getMinutes();
-    const min = (minute / 10 >= 1) ? minute : ('0' + minute);
-    const second = dateTime.getSeconds();
-    const ss = (second / 10 >= 1) ? second : ('0' + second);
-
-    const result: String = `${mm}/${dd}/${yyyy} ${hh}:${min}:${ss}`;
-    return result;
-  }
 
   setDateRange() {
     console.log('setDateRange', this.selectedCalendarType.toLocaleLowerCase())

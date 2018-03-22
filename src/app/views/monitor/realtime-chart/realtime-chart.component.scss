@@ -16,22 +16,30 @@
     z-index: 1;
   }
 }
-.card-body *{
-// outline: 1px red solid;
+
+.device-status,
+.device-status * {
+  // outline: 1px red solid;
 }
+
+.card-body * {
+  // outline: 1px red solid;
+}
+
 .posture {
-  padding-top: 30px;
+  padding: 30px 5px 0 5px;
 }
 
 .card-header {
   // padding: 0.30rem 1.25rem;
 }
 
-//battery 
-body {
-  padding: 4em;
+.rssi-img {
+  height: 15px;
+  ;
 }
 
+//battery 
 .battery {
   color: #34495e;
   border-color: #34495e;
@@ -41,6 +49,7 @@ body {
   width: 22px;
   height: 12px;
   position: relative;
+  top: 8px;
   border-radius: 2px;
   box-sizing: border-box;
   margin: 5px;

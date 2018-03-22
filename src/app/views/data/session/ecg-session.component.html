@@ -1,8 +1,9 @@
 <div class="session">
   <div class="max-width-960">
     <div class="pull-left status-bar">
-      <div class="time">2018/03/15 9:00 </div>
-      <span class="m-hvalue" style="font-size: 25px;display: inline-block;margin-left: 20px;">5 minutes data from Steven at Room 2</span>
+      <div class="time">{{selectedDataSet.durationStr}}</div>
+      <span class="m-hvalue" style="font-size: 25px;display: inline-block;margin-left: 20px;">
+          {{selectedDataSet.dateStr}} data from {{selectedDataSet.deviceId.name}} at {{selectedDataSet.gatewayId.name}}</span>
     </div>
     <div class="container-fluid">
       <!-- <div class="col-xs-1 pull-right">

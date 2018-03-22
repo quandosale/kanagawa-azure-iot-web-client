@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  //  API_URL: 'http://localhost:8080',
-  API_URL: 'https://kanagawa-web.azurewebsites.net/',
+  API_URL: 'http://localhost:8080',
+  // API_URL: 'https://kanagawa-web.azurewebsites.net/',
   IOT_CONSUMER_GROUP: 'kanagawaconsumers'
 };

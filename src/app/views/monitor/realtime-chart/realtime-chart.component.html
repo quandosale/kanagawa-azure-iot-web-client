@@ -23,7 +23,7 @@
             <b>{{isSensor ? ' ON' : 'OFF'}}</b>
           </i> -->
             <div class="tooltip-custom">
-              <img src="{{rssiImageSrc}}" width="25" style="vertical-align: bottom" />
+              <img src="{{rssiImageSrc}}" width="20" class="rssi-img"/>
               <span *ngIf="rssi==-1000" class="tooltiptext">rssi : Unknown</span>
               <span *ngIf="rssi!=-1000" class="tooltiptext">rssi : {{rssi}}</span>
             </div>

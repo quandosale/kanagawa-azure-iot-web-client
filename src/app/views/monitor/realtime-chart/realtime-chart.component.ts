@@ -23,7 +23,7 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
   temperature = 0;
   posture = -1;
   rssi = -1000;
-  rssiImageSrc = 'assets/img/rssi0.png';
+  rssiImageSrc = 'assets/img/rssi-no.png';
   postureImageSrc = 'assets/img/user-what.png';
 
   setting: AlarmSetting = new AlarmSetting();
@@ -46,9 +46,9 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
 
     this.iotSubscription = this.iotService.dataListner().subscribe(data => {
       if (data.emitter_mac === this.device.mac) {
-        console.log(`${data.emitter_mac}: data received`, data.ecg.length);
+        console.log(`${data.emitter_mac}: data received`, data);
         this.ecgChartComponent.push(data.ecg);
-        this.heartrate = data.heartrate;
+        this.heartrate = data.heartrate.length > 0 ? data.heartrate[0] : 0;
         this.isSensor = data.isSensor;
         if (!this.isSensor) {
           this.playAudioSensor();
@@ -72,20 +72,18 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
         this.rssi = data.rssi;
         this.rssi = Math.round(100 * (127 + this.rssi) / (127 + 20));
         if (this.rssi < 0) {
-          this.rssiImageSrc = 'assets/img/rssi0.png';
+          this.rssiImageSrc = 'assets/img/rssi-no.png';
         } else if (this.rssi < 20) {
-          this.rssiImageSrc = 'assets/img/rssi1.png';
+          this.rssiImageSrc = 'assets/img/rssi-1.png';
         } else if (this.rssi < 40) {
-          this.rssiImageSrc = 'assets/img/rssi2.png';
+          this.rssiImageSrc = 'assets/img/rssi-2.png';
         } else if (this.rssi < 60) {
-          this.rssiImageSrc = 'assets/img/rssi3.png';
+          this.rssiImageSrc = 'assets/img/rssi-3.png';
         } else if (this.rssi < 80) {
-          this.rssiImageSrc = 'assets/img/rssi4.png';
+          this.rssiImageSrc = 'assets/img/rssi-4.png';
         } else {
-          this.rssiImageSrc = 'assets/img/rssi5.png';
+          this.rssiImageSrc = 'assets/img/rssi-5.png';
         }
-
-
       }
     });
     // setTimeout(this.simulate(), 40);

@@ -1,7 +1,7 @@
 import { FileType } from '../../../../common/FileType';
 import { Component, OnInit, Output, EventEmitter, Input, AfterViewInit, ElementRef } from '@angular/core';
-import { GatewayService } from '../../../../services/index';
-
+import { GatewayService, SharedService } from '../../../../services/index';
+import { environment } from '../../../../../environments/environment';
 declare let $: any;
 @Component({
   selector: 'heart-rate-chart',
@@ -43,7 +43,7 @@ export class HeartRateChartComponent implements OnInit, AfterViewInit {
   timelinePosition = -1;
   MinHR = 60;
   age = 40;
-  constructor(private gatewayService: GatewayService, public elNode: ElementRef,
+  constructor(private gatewayService: GatewayService, public elNode: ElementRef, private sharedService: SharedService,
   ) { }
 
   updateAF(data) {
@@ -57,11 +57,13 @@ export class HeartRateChartComponent implements OnInit, AfterViewInit {
     console.log('hr af', data, this.AFData, this.heartRateData.length, this.heartRateData, this.hrStep);
     this.update();
   }
+  selectedDataSet: any;
   ngOnInit() {
+    this.selectedDataSet = this.sharedService.getSelectedDataSet();
     this.getStorageFile(true);
   }
   getStorageFile(isInflate: boolean) {
-    const url = 'https://firebasestorage.googleapis.com/v0/b/calm-172003.appspot.com/o/dataset%2FIz27LOXpSvXlbpjjhDocm00PD383%2F20180118_041146_0_1610736%2F20180118_041146_hr.dat?alt=media&token=b420bf33-812f-4354-96c0-536b642b763d';
+    const url = `${environment.API_URL}/dataset/download/${this.selectedDataSet.file}${FileType.HEART_RATE}`;
     this.downloadFileWithInflate(url);
 
   }
@@ -448,7 +450,7 @@ export class HeartRateChartComponent implements OnInit, AfterViewInit {
     return res;
   }
   // END heart rate filter
-  
+
   transformHR(hr: number): number {
     const MaxHR = 220 - this.age;
 

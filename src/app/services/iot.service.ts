@@ -25,19 +25,20 @@ export class IOTService {
     // parse ecg
     const ecg_buf = data.row.ecg;
     const sensor = data.row.isSensor;
-    const hr = data.row.heartrate;
+    const hr_buf = data.row.heartrate.data;
     const battery = data.row.battery;
     const temperature = data.row.temperature;
     const pos = data.row.pos;
     const rssi = data.row.rssi;
     const ecgArr = MitBit.buffer12ToArray(ecg_buf.data);
-
+    const hrArr = MitBit.buffer12ToArray(hr_buf);
+    console.log(hrArr);
     const iot_tmp = new iotData();
     iot_tmp.duration = ecgArr.length / 250; // convert second
     iot_tmp.emitter_mac = data.row.emitter;
     iot_tmp.ecg = ecgArr;
     iot_tmp.isSensor = sensor;
-    iot_tmp.heartrate = hr;
+    iot_tmp.heartrate = hrArr;
     iot_tmp.temperature = temperature;
     iot_tmp.battery = battery;
     iot_tmp.posture = pos;
@@ -95,7 +96,7 @@ export class iotData {
   emitter_mac: string;
   ecg: number[];
   isSensor: boolean;
-  heartrate: number;
+  heartrate: number[];
   battery: number;
   temperature: number;
   duration: number;

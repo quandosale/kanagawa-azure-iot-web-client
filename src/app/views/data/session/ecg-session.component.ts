@@ -3,11 +3,11 @@ import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 // services
-import { GatewayService } from '../../../services/index';
+import { GatewayService, SharedService } from '../../../services/index';
 
 declare var $: any;
 import { FileType } from './../../../common/FileType';
-
+import { environment } from '../../../../environments/environment';
 import { EcgStaticChartComponent } from './ecg-chart/ecg-static-chart.component';
 import { HeartRateChartComponent } from './heart-rate-chart/heart-rate-chart.component';
 import { Meta, Title } from '@angular/platform-browser';
@@ -44,24 +44,45 @@ export class EcgSessionComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     // this.downloadFile();
+    this.selectedDataSet = this.sharedService.getSelectedDataSet();
+    this.selectedDataSet.dateStr = this.dateFormat(this.selectedDataSet.start);
     this.getAFStorageFile();
   }
-  isNotEnoughAF = false;
-  getAFStorageFile() {
-    const url = 'https://firebasestorage.googleapis.com/v0/b/calm-172003.appspot.com/o/dataset%2FIz27LOXpSvXlbpjjhDocm00PD383%2F20180118_041146_0_1610736%2F20180118_041146_af.dat?alt=media&token=083ce9f1-74fd-4fb0-9acf-ebda84e440a2';
-    this.downloadFileWithInflate(url);
+  // convert date to Formatted String
+  dateFormat(date: Date): String {
+    const dateTime = new Date(date);
+    const yyyy = dateTime.getFullYear();
+    const month = dateTime.getMonth() + 1;
+    const mm = (month / 10 >= 1) ? month : ('0' + month);
+    const day = dateTime.getDate();
+    const dd = (day / 10 >= 1) ? day : ('0' + day);
 
+    const hour = dateTime.getHours();
+    const hh = (hour / 10 >= 1) ? hour : ('0' + hour);
+    const minute = dateTime.getMinutes();
+    const min = (minute / 10 >= 1) ? minute : ('0' + minute);
+    const second = dateTime.getSeconds();
+    const ss = (second / 10 >= 1) ? second : ('0' + second);
+
+    const result: String = `${mm}/${dd}/${yyyy} ${hh}:${min}:${ss}`;
+    return result;
+  }
+  isNotEnoughAF = false;
+  selectedDataSet: any;
+  getAFStorageFile() {
+    const url = `${environment.API_URL}/dataset/download/${this.selectedDataSet.file}${FileType.AF}`;
+    this.downloadFileWithInflate(url);
   }
   downloadFileWithInflate(url) {
     // `url` is the download URL for 'images/stars.jpg'
 
     // This can be downloaded directly:
     const xhr = new XMLHttpRequest();
-    xhr.responseType = 'arraybuffer';
+    xhr.responseType = 'text';
     const self = this;
     xhr.onload = function (event) {
-      const blob: ArrayBuffer = xhr.response;
-      self.anaylsysDataBinayry(blob);
+      const text = xhr.response;
+      self.anaylsysDataBinayry(text);
     };
     xhr.onprogress = function (e) {
       // self.percent = `${Math.floor(100 * e.loaded / e.total)} %`;
@@ -84,20 +105,25 @@ export class EcgSessionComponent implements OnInit, OnDestroy {
   }
   af_index_ecg = [];
   af_index_hr = [];
-  anaylsysDataBinayry(binaryblob: ArrayBuffer) {
-    // // Pako magic
-    // const byteArrayInflated = pako.inflate(binaryblob);
-    const data = this.unit8ArrTo32Arr(binaryblob);
-    console.log('af,', data)
-    for (var i = 0; i < data.length / 2; i++) {
-      this.af_index_ecg.push(data[2 * i]);
-      this.af_index_hr.push(data[2 * i + 1]);
+  anaylsysDataBinayry(str) {
+    let arr1 = str.split(',');
+    // console.warn("analysisData", arr.length, arr[7])
+
+    let numberArr = arr1.map(function (item) {
+      if (!isNaN(item))
+        return parseInt(item);
+      else return 0;
+    });
+    console.log('af,', numberArr)
+    for (var i = 0; i < numberArr.length / 2; i++) {
+      this.af_index_ecg.push(numberArr[2 * i]);
+      this.af_index_hr.push(numberArr[2 * i + 1]);
     }
 
 
     this.isEnableAF = true;
   }
-  
+
   tapShowAF() {
     if (this.isShowAF) {
       this.ecgChartComponent.updateAF(this.af_index_ecg);
@@ -159,7 +185,10 @@ export class EcgSessionComponent implements OnInit, OnDestroy {
 
     return result;
   }
-  constructor(private gatewayService: GatewayService, private route: ActivatedRoute,
+  constructor(
+    private sharedService: SharedService,
+    private gatewayService: GatewayService,
+    private route: ActivatedRoute,
     private _location: Location,
     public meta: Meta,
     public title: Title) { }
