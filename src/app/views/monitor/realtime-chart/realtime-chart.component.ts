@@ -139,13 +139,22 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
     } else {
       if (this.recordDataset == null) {
         console.log('cancel Record')
-        this.dataService.cancelRecord(this.device._id)
+        this.dataService.cancelRecord(this.device._id, '')
           .subscribe(res => {
             console.log(res);
           })
         return;
       }
+
       this.recordDataset.duration = new Date().getTime() - this.recordDataset.start;
+      if (this.recordDataset.duration < 10 * 1000) {
+        console.log('less than 10seconds, cancel Record');
+        this.dataService.cancelRecord(this.device._id, this.recordDataset.datasetId)
+          .subscribe(res => {
+            console.log(res);
+          })
+        return;
+      }
       this.dataService.stopRecord(this.recordDataset)
         .subscribe(res => {
           console.log(res);

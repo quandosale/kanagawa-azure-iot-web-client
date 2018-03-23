@@ -12,8 +12,8 @@ export class DataService {
   stopRecord(dataset: Dataset): Observable<any> {
     return this.apiService.put('/dataset/recordstop/', dataset);
   }
-  cancelRecord(deviceId: string): Observable<any> {
-    return this.apiService.put('/dataset/recordcancel/', { deviceId: deviceId });
+  cancelRecord(deviceId: string, datasetId): Observable<any> {
+    return this.apiService.put('/dataset/recordcancel/', { deviceId: deviceId, datasetId: datasetId });
   }
   getRecordList(a, b, c, d, e): Observable<any> {
     return this.apiService.post('/dataset/get-list/');

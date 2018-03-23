@@ -1,13 +1,34 @@
 .posture-container {
   position: relative;
   @media only screen and (max-width: 1440px) {
-    .ecg-thumbnail-chart {
+    .posture-mark {
+      width: 100%;
+      .img-info {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        background-size: 100%;
+        &.up {
+          background-image: url("/assets/img/user-up-color.png");
+        }
+        &.down {
+          background-image: url("/assets/img/user-down-color.png");
+        }
+        &.walk {
+          background-image: url("/assets/img/user-walk-color.png");
+        }
+      }
+    }
+    .chart {
       -ms-transform: scale(1, 0.8);
       /* IE 9 */
       -webkit-transform: scale(1, 0.8);
       /* Safari */
       transform: scale(1, 0.8);
       /*margin-top: -10px;*/
+      width: 100%;
+      display: block;
+      height: 60px;
     }
   }
   .overlayer {

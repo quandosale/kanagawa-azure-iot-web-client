@@ -1,5 +1,11 @@
 <div class="posture-container">
-  <chart [options]="options" style="width:100%; display:block;height:200px;" (load)="saveInstance($event.context)" class="ecg-thumbnail-chart">
+  <div class="posture-mark">
+    <span class="img-info up"></span>
+    <span class="img-info down"></span>
+    <span class="img-info walk"></span>
+
+  </div>
+  <chart class="chart" [options]="options" (load)="saveInstance($event.context)">
   </chart>
 
   <div class="overlayer" [class.Show]="isBusy"></div>

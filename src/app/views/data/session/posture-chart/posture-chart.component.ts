@@ -15,7 +15,18 @@ export class PostureChartComponent implements OnChanges, OnInit {
   isBusy = true;
   options: any;
   chart: ChartComponent = null;
-  colors = ['#FFA47F', '#66A47F', '#0C337F', '#0CA400', '#0CA47F'];
+  // case 1:
+  //           this.postureImageSrc = 'assets/img/user-down.png';
+  //           break;
+  //         case 0:
+  //           this.postureImageSrc = 'assets/img/user-up.png';
+  //           break;
+  //         case 2:
+  //           this.postureImageSrc = 'assets/img/user-walk.png';
+  // up 009e0f
+  // walk e539c3
+  // down 2b78e4
+  colors = ['#2b78e4', '#009e0f', '#e539c3'];
   selectedDataSet: any;
   ngOnInit() {
     // if (this.ecg == null) { return; }
@@ -42,7 +53,7 @@ export class PostureChartComponent implements OnChanges, OnInit {
     const self = this;
     xhr.onload = function (event) {
       const text = xhr.response;
-      if (xhr.status == 404) {
+      if (xhr.status == 404 || xhr.status == 403) {
         console.error('Cannot find posture file')
         self.isError = true;
         self.isBusy = false;
@@ -56,15 +67,19 @@ export class PostureChartComponent implements OnChanges, OnInit {
     xhr.open('GET', url);
     xhr.send();
   }
+  isNumeric(num) {
+    return !isNaN(parseFloat(num)) && isFinite(num);
+  }
   anaylsysDataBinayry(str) {
     let arr1 = str.split('');
-    // console.warn("analysisData", arr.length, arr[7])
-
-    let numberArr = arr1.map(function (item) {
-      if (!isNaN(item))
-        return parseInt(item);
-      else return 0;
-    });
+    let numberArr = [];
+    for (let i = 0; i < arr1.length; i++) {
+      let item = arr1[i];
+      if (this.isNumeric(item)) {
+        console.log(item)
+        numberArr.push(parseInt(item));
+      }
+    }
 
     this.update(numberArr);
     console.log('posture,', numberArr)
@@ -119,7 +134,7 @@ export class PostureChartComponent implements OnChanges, OnInit {
       },
       tooltip: {
         valueSuffix: ' seconds',
-        enabled: true,
+        enabled: false,
         // formatter: function () {
         //   let res = self.region[this.point.x].min + '<br>' + self.region[this.point.x].max;
         //   return res;
