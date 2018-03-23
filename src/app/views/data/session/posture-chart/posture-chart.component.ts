@@ -29,7 +29,8 @@ export class PostureChartComponent implements OnChanges, OnInit {
     this.getStorageFile(true);
   }
   getStorageFile(isInflate: boolean) {
-    const url = `${environment.API_URL}/dataset/download/${this.selectedDataSet.file}${FileType.POSTURE}`;
+    // const url = `${environment.API_URL}/dataset/download/${this.selectedDataSet.file}${FileType.POSTURE}`;
+    const url = `${environment.STORAGE_URL}/${this.selectedDataSet.file}${FileType.POSTURE}?${environment.STORAGE_ACCOUNT_SAS}`;
     this.downloadFileWithInflate(url);
 
   }
@@ -40,6 +41,7 @@ export class PostureChartComponent implements OnChanges, OnInit {
     const self = this;
     xhr.onload = function (event) {
       const text = xhr.response;
+      console.log('posture text',text);
       self.anaylsysDataBinayry(text);
     };
     xhr.onprogress = function (e) {

@@ -117,7 +117,8 @@ export class EcgStaticChartComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   getStorageFile(isInflate: boolean, isRow: boolean) {
-    const url = `${environment.API_URL}/dataset/download/${this.selectedDataSet.file}${FileType.ECG_EN}`;
+    // const url = `${environment.API_URL}/dataset/download/${this.selectedDataSet.file}${FileType.ECG_EN}`;
+    const url = `${environment.STORAGE_URL}/${this.selectedDataSet.file}${FileType.ECG_EN}?${environment.STORAGE_ACCOUNT_SAS}`;
     console.log(url);
     this.downloadEcgFileWithInflate(url, isRow);
   }
@@ -131,6 +132,7 @@ export class EcgStaticChartComponent implements OnInit, AfterViewInit, OnDestroy
     const self = this;
     xhr.onload = function (event) {
       const blob: ArrayBuffer = xhr.response;
+      console.log('ecg blob', blob)
       self.anaylsysDataBinayry(blob, isRow);
     };
     xhr.onprogress = function (e) {

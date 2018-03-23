@@ -11,5 +11,5 @@ export class FileType {
     static MOTION_EN = '_accel.dat';
 
     static SLEEP = '_sleep.csv';
-    static AF = '_af.txt';
+    static AF = '_af.hex';
 }

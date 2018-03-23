@@ -70,19 +70,18 @@ export class EcgSessionComponent implements OnInit, OnDestroy {
   isNotEnoughAF = false;
   selectedDataSet: any;
   getAFStorageFile() {
-    const url = `${environment.API_URL}/dataset/download/${this.selectedDataSet.file}${FileType.AF}`;
+    // const url = `${environment.API_URL}/dataset/download/${this.selectedDataSet.file}${FileType.AF}`;
+    const url = `${environment.STORAGE_URL}/${this.selectedDataSet.file}${FileType.AF}?${environment.STORAGE_ACCOUNT_SAS}`;
+    console.log(url);
     this.downloadFileWithInflate(url);
   }
   downloadFileWithInflate(url) {
-    // `url` is the download URL for 'images/stars.jpg'
-
-    // This can be downloaded directly:
     const xhr = new XMLHttpRequest();
     xhr.responseType = 'text';
     const self = this;
     xhr.onload = function (event) {
       const text = xhr.response;
-      console.log(text);
+      console.log('af',text);
       self.anaylsysDataBinayry(text);
     };
     xhr.onprogress = function (e) {
