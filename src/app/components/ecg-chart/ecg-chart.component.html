@@ -1,1 +1,4 @@
-<canvas #canvas id="mycanvas"></canvas>
+<div class="canvas-parent">
+  <canvas #canvas id="mycanvas"></canvas>
+  <div class="overflow" *ngIf="data.length==0">Disconnected</div>
+</div>

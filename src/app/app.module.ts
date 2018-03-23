@@ -119,7 +119,7 @@ export function highchartsFactory() {
     PostureChartComponent,
 
     SettingComponent,
-    
+
     RealtimeChartComponent,
   ],
   providers: [{

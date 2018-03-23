@@ -32,7 +32,6 @@ export class IOTService {
     const rssi = data.row.rssi;
     const ecgArr = MitBit.buffer12ToArray(ecg_buf.data);
     const hrArr = MitBit.buffer12ToArray(hr_buf);
-    console.log(hrArr);
     const iot_tmp = new iotData();
     iot_tmp.duration = ecgArr.length / 250; // convert second
     iot_tmp.emitter_mac = data.row.emitter;
@@ -48,9 +47,9 @@ export class IOTService {
   }
 
   listenMessages() {
-    console.log('listenMessages')
     if (this.ws) {
-      this.ws.close();
+      if (this.ws.readyState == this.ws.OPEN)
+        this.ws.close();
     }
     this.ws = new WebSocket('wss://kanagawa-web.azurewebsites.net');
     this.ws.onopen = function () {
@@ -66,7 +65,7 @@ export class IOTService {
         }
 
         if (obj.TAG === 'For Socket Debug') {
-          // console.log(obj);
+           console.log(obj);
         }
       } catch (err) {
         console.error(err);

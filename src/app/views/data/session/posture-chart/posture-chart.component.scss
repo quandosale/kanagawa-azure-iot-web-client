@@ -1,0 +1,62 @@
+.posture-container {
+  position: relative;
+  @media only screen and (max-width: 1440px) {
+    .ecg-thumbnail-chart {
+      -ms-transform: scale(1, 0.8);
+      /* IE 9 */
+      -webkit-transform: scale(1, 0.8);
+      /* Safari */
+      transform: scale(1, 0.8);
+      /*margin-top: -10px;*/
+    }
+  }
+  .overlayer {
+    position: absolute;
+    display: inline-block;
+    visibility: hidden;
+    top: 0;
+    left: 0;
+    width: 99%;
+    height: 200%;
+    opacity: 0;
+    background: #fff;
+    &.Show {
+      visibility: visible;
+    }
+  }
+  .error-message {
+    position: absolute;
+    display: inline-block; // visibility: hidden;
+    top: 46%;
+    left: 0;
+    width: 99%;
+    color: #ff0000;
+    visibility: hidden;
+    text-align: center;
+    height: 50%;
+    &.Show {
+      visibility: visible;
+    }
+  }
+  .busySplash {
+    position: absolute;
+    left: calc(50% - 15px);
+    top: calc(50% - 15px);
+    display: inline-block;
+    visibility: hidden;
+    display: inline-block;
+    font-size: 30px;
+    line-height: 30px;
+    color: green;
+    height: 30px;
+    -animation: spin .7s infinite linear;
+    -webkit-animation: spinWebkit .7s infinite linear;
+    -moz-animation: spinMoz .7s infinite linear;
+    -ms-animation: spin .7s linear infinite;
+    -o-animation: spin .7s linear infinite;
+    animation: spin .7s linear infinite;
+    &.Show {
+      visibility: visible;
+    }
+  }
+}

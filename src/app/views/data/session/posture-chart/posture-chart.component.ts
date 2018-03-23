@@ -7,11 +7,12 @@ import { FileType } from '../../../../common/FileType';
 @Component({
   selector: 'posture-chart',
   templateUrl: './posture-chart.component.html',
-  styleUrls: ['./posture-chart.component.css']
+  styleUrls: ['./posture-chart.component.scss']
 })
 export class PostureChartComponent implements OnChanges, OnInit {
   // @Input() ecg: Number[];
-
+  isError = false;
+  isBusy = true;
   options: any;
   chart: ChartComponent = null;
   colors = ['#FFA47F', '#66A47F', '#0C337F', '#0CA400', '#0CA47F'];
@@ -41,7 +42,12 @@ export class PostureChartComponent implements OnChanges, OnInit {
     const self = this;
     xhr.onload = function (event) {
       const text = xhr.response;
-      console.log('posture text',text);
+      if (xhr.status == 404) {
+        console.error('Cannot find posture file')
+        self.isError = true;
+        self.isBusy = false;
+        return;
+      }
       self.anaylsysDataBinayry(text);
     };
     xhr.onprogress = function (e) {
@@ -59,6 +65,7 @@ export class PostureChartComponent implements OnChanges, OnInit {
         return parseInt(item);
       else return 0;
     });
+
     this.update(numberArr);
     console.log('posture,', numberArr)
 
@@ -146,18 +153,20 @@ export class PostureChartComponent implements OnChanges, OnInit {
       credits: {
         enabled: false
       },
-      series: [{
-        name: 'posture',
-        data: [
-          { y: 133, color: '#0CA47F' }],
-        pointWidth: 36
-      }]
+      series: [
+        //   {
+        //   name: 'posture',
+        //   data: [
+        //     { y: 133, color: '#0CA47F' }],
+        //   pointWidth: 36
+        // }
+      ]
     };
   }
   posture = [];
 
   update(data) {
-
+    this.isBusy = false;
     for (var i = 0; i < data.length; i++) {
       const rand = data[i] % this.colors.length;
       const item = {

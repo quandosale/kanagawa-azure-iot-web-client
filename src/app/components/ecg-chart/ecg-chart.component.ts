@@ -105,7 +105,6 @@ export class EcgChartComponent implements OnInit, OnDestroy {
 
   push(arr: number[]) {
     this.data = this.data.concat(arr);
-    console.log(this.data.length);
     if (this.data.length > this.DATA_LIMIT_MAX) {
       this.data = this.data.slice(0, 5000);
     }

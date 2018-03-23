@@ -25,8 +25,8 @@ const translationOptions = {
 })
 export class AppTranslationModule {
   constructor(private translate: TranslateService, private sharedService: SharedService) {
-    translate.addLangs(['en', 'ja']);
-    translate.setDefaultLang('en');
+    // translate.addLangs(['en', 'ja']);
+    // translate.setDefaultLang('en');
     // const lang = this.sharedService.getLang();
     // try {
     //   if (lang != null && lang !== undefined) {

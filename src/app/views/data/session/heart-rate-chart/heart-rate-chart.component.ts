@@ -68,38 +68,17 @@ export class HeartRateChartComponent implements OnInit, AfterViewInit {
     this.downloadFileWithInflate(url);
 
   }
-  downStart = 0;
-  downloadFile(url) {
-    // `url` is the download URL for 'images/stars.jpg'
-
-    // This can be downloaded directly:
-    const xhr = new XMLHttpRequest();
-    // xhr.responseType = 'blob';
-    const self = this;
-    xhr.onload = function (event) {
-      const blob: string = xhr.response;
-      // console.warn(blob)
-      // let duration = new Date().getTime() - self.downStart;
-      // let lineCount = (blob.match(/\n/g) || []).length;
-      self.isBusy = false;
-      self.anaylsysData(blob);
-
-    };
-    xhr.onprogress = function (e) {
-      // console.log("hr progress", e);
-    };
-    xhr.open('GET', url);
-    xhr.send();
-    // window.open(url)
-  }
   downloadFileWithInflate(url) {
-    // `url` is the download URL for 'images/stars.jpg'
-
-    // This can be downloaded directly:
     const xhr = new XMLHttpRequest();
     xhr.responseType = 'arraybuffer';
     const self = this;
     xhr.onload = function (event) {
+      if (xhr.status == 404) {
+        console.error('Cannot find heart rate file')
+        self.isBusy = false;
+        self.isError = true;
+        return;
+      }
       const blob: ArrayBuffer = xhr.response;
       console.log('hr blob', blob)
       self.isBusy = false;

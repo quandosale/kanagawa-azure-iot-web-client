@@ -1,7 +1,7 @@
 <div class="ecg-acc">
   <div class="graph">
     <div id="accelerometerGraph" class="demo-placeholder" (window:resize)="onEcgResize($event)" (click)="onMouseClick($event)"></div>
-    <div class="overlayer" [class.Show]="isNotEnough">{{'page.data.Data is empty' | translate}}</div>
+    <div class="overlayer" [class.Show]="isNotEnough">Data is empty</div>
     <i class="fa fa-spinner busySplash" [class.Show]="isBusy && !isNotEnough"></i>
     <i class="percent" [class.Show]="percent && isBusy">{{percent}}</i>
     <!-- <i class="fa fa-spinner busySplash" [class.Show]="true"></i>

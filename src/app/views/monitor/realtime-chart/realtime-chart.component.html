@@ -28,9 +28,9 @@
           </div>
           <i class="rss i-5 hover-animate"></i>
           <div class="tooltip-custom">
-            <div class="battery hover-animate" [attr.data-charge]="battery" style="margin-top:5px;"></div>
+            <div class="battery hover-animate" [attr.data-charge]="batteryInt" style="margin-top:5px;"></div>
             <span *ngIf="battery==-1" class="tooltiptext">battery : Unknown</span>
-            <span *ngIf="battery!=-1" class="tooltiptext">battery : {{battery}}</span>
+            <span *ngIf="battery!=-1" class="tooltiptext">battery : {{battery*10}}%</span>
           </div>
           <div class="tooltip-custom">
             <span class="temp-value hover-animate">
@@ -53,7 +53,7 @@
           <!-- Rounded switch -->
           <span class="form-group1">
             <span class="switch switch-sm">
-              <input type="checkbox" class="switch" [attr.id]="device.mac" [(ngModel)]="isRecord" (change)="onSwitchRecord()">
+              <input type="checkbox" class="switch" [attr.id]="device.mac" [(ngModel)]="isRecord" (change)="onSwitchRecord()"  [attr.disabled]="(!isRecord && ecgChartComponent.data.length==0)? '' : null">
               <label [attr.for]="device.mac">Record</label>
             </span>
           </span>

@@ -252,6 +252,9 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   transform(data: any): any {
     const dataset = data;
+    if (data.gatewayId == null) data.gatewayId = {};
+    if (data.deviceId == null) data.deviceId = {};
+
     dataset.datetime = this.datetimeToDate(new Date(dataset.start));
     dataset.time = this.datetimeToTime(new Date(dataset.start));
     dataset.duration = dataset.duration >= 0 ? dataset.duration : 0;
@@ -284,16 +287,9 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   getDatas(): void {
-    // const userID = this.sharedService.getUser().uid;
-    const userID = 'r69lT5eiLfdpsgY4d8NWGQ9usv83';
-    // if (this.selectedPatient === 'all') {
-    // } else {
-    // }
-
-    // console.log(userID, this.datefrom, this.dateto, this.selectedDataType, 'limmit: ', this.m_limit);
     this.preMilli = { year: -1, month: -1, day: -1 };
     this.Data = [];
-    this.dataService.getRecordList([userID], -1, -1, '-1', this.m_limit)
+    this.dataService.getRecordList([], -1, -1, '-1', this.m_limit)
       .subscribe(res => {
         console.log(res);
         if (res.success) {
@@ -305,7 +301,16 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
           }
 
           for (const element of res.data) {
-            // console.log(element);
+            console.log(element);
+            console.log(element.deviceId.currentRecordingDatasetId)
+            // Exclude Current Recording Element
+            try {
+              if (element.deviceId.isRecord) {
+                let currentRecordingDatasetId = element.deviceId.currentRecordingDatasetId;
+                if (currentRecordingDatasetId === element.datasetId) continue;
+              }
+
+            } catch (e) { }
             this.Data.push(this.transform(element));
           } // for
           this.filterData();

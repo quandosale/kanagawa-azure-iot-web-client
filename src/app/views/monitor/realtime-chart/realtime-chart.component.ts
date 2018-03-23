@@ -20,6 +20,8 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
   heartrate = 0;
   isSensor = false;
   battery = -1;
+  batteryInt = -1;
+
   temperature = 0;
   posture = -1;
   rssi = -1000;
@@ -47,7 +49,7 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
 
     this.iotSubscription = this.iotService.dataListner().subscribe(data => {
       if (data.emitter_mac === this.device.mac) {
-        console.log(`${data.emitter_mac}: data received`, data);
+        // console.log(`${data.emitter_mac}: data received`, data);
         this.ecgChartComponent.push(data.ecg);
         this.heartrate = data.heartrate.length > 0 ? data.heartrate[0] : 0;
         this.isSensor = data.isSensor;
@@ -61,6 +63,7 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
 
         this.temperature = data.temperature;
         this.battery = data.battery / 10;
+        this.batteryInt = Math.round(data.battery / 10);
         this.posture = data.posture;
         switch (this.posture) {
           case 1:
@@ -192,7 +195,6 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
     this.isFlashDisconnected = true;
   }
   statusChanged(isConnected: number) {
-    console.log(isConnected);
     if (!isConnected) {
       this.playAudioDisconnect();
       this.flashDisconnect();

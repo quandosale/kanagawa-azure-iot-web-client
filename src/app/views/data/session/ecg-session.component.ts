@@ -80,8 +80,12 @@ export class EcgSessionComponent implements OnInit, OnDestroy {
     xhr.responseType = 'text';
     const self = this;
     xhr.onload = function (event) {
+      if (xhr.status == 404) {
+        console.error('Cannot find af file')
+        return;
+      }
       const text = xhr.response;
-      console.log('af',text);
+      console.log('af', text);
       self.anaylsysDataBinayry(text);
     };
     xhr.onprogress = function (e) {

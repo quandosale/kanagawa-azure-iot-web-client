@@ -123,6 +123,9 @@ export class EcgStaticChartComponent implements OnInit, AfterViewInit, OnDestroy
     this.downloadEcgFileWithInflate(url, isRow);
   }
   downStart = 0;
+  file404Error() {
+  
+  }
   downloadEcgFileWithInflate(url, isRow: boolean) {
     // `url` is the download URL for 'images/stars.jpg'
 
@@ -131,6 +134,13 @@ export class EcgStaticChartComponent implements OnInit, AfterViewInit, OnDestroy
     xhr.responseType = 'arraybuffer';
     const self = this;
     xhr.onload = function (event) {
+      if (xhr.status == 404) {
+        self.isBusy = false;
+        self.isNotEnough = true;
+
+        console.error('Cannot find ecg file')
+        return;
+      }
       const blob: ArrayBuffer = xhr.response;
       console.log('ecg blob', blob)
       self.anaylsysDataBinayry(blob, isRow);
@@ -156,6 +166,9 @@ export class EcgStaticChartComponent implements OnInit, AfterViewInit, OnDestroy
     const dateTime = new Date(this.dataSetTime);
     this.timeBegin = dateTime.getTime();
     this.queue = data;
+    if (this.AccDataSize < this.plotSize) {
+      this.isNotEnough = true;
+    }
     this.update();
   }
 
@@ -260,7 +273,7 @@ export class EcgStaticChartComponent implements OnInit, AfterViewInit, OnDestroy
     }
     if (!this.isPlotFull()) {
       if (this.isNotEnough) { this.isBusy = false; }
-      this.isBusy = true;
+      // this.isBusy = true;
       this.PlotDataLoad();
     } else {
       this.isBusy = false;
