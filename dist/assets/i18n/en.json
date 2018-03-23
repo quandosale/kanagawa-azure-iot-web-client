@@ -1,0 +1,100 @@
+{
+  "login": {
+    "sign_with_google": "Sign in with Google",
+    "EmailAddress": "Email Address",
+    "Password": "Password",
+    "please_enter_your_email": "Please enter a valid email address.",
+    "please_enter_your_password": "Please enter your password.",
+    "login": "Log In",
+    "forget_passsword_q": "Forgot password?"
+  },
+  "forget": {
+    "reset_your_password": "Reset your password",
+    "enter_your_email": "Enter your email address and we will send you a link to reset your password.",
+    "send": "Send"
+  },
+  "header": {
+    "Today": "Today"
+  },
+  "menu": {
+    "Welcome": "Welcome,",
+    "Dashboard": "Dashboard",
+    "Data": "Data",
+    "Profile": "Profile",
+    "Logout": "Logout",
+    "Upgrade": "Upgrade"
+  },
+  "page": {
+    "dashboard": {
+      "My_Highlight": "My Highlight",
+      "Resting_HR": "Resting HR",
+      "Maximum_HR": "Maximum HR",
+      "No_enough_Data": "No Enough Data"
+    },
+    "data": {
+      "Comment": "Comment",
+      "Save": "Save",
+      "Comment updated successfully": "Comment updated successfully",
+      "History": "Data History",
+      "Filter_By": "Filter By",
+      "All": "All",
+      "Year": "Year",
+      "Month": "Month",
+      "Week": "Week",
+      "Day": "Day",
+      "Data_Type": "Data Type",
+      "Exercise": "Exercise",
+      "Sleep": "Sleep",
+
+      "Type": "Type",
+      "Description": "Description",
+      "Date": "Date",
+      "No_Data": "No Data",
+      "More": "More",
+      "Data is empty": "Data is empty",
+      "ecg": {
+        "Time in heart rate zones": "Time in heart rate zones",
+        "Heart Rate": "Heart Rate",
+        "Electrocadiogram": "Electrocadiogram",
+        "CALMness": "CALMness",
+        "Motion intensity": "Motion intensity",
+        "Total Session": "Total Session",
+        "Duration": "Duration",
+        "Maximum": "Maximum",
+        "Time Scale": "Time Scale",
+        "Speed": "Speed"
+      },
+      "sleep": {
+        "Resting": "Resting",
+        "Total Sleep": "Total Sleep",
+        "Duration": "Time",
+        "Time in sleep stages": "Time in sleep stages",
+        "Sleep quality score": "Sleep quality score",
+        "Sleep map": "Sleep map"
+      }
+    },
+    "profile": {
+      "Profile": "Profile",
+      "Account": "Account",
+      "Basic": "Basic",
+      "Change Password": "Change Password",
+      "Close Account": "Close Account",
+      "msg_delete_account": "Do you want to delete User?",
+      "delete_user": "Delete User",
+      "Name": "Name",
+      "Birthday": "Birthday",
+      "Heighc(Cm)": "Heighc(cm)",
+      "Weight(Kg)": "Weight(kg)",
+      "Gender": "Gender",
+      "Male": "Male",
+      "Female": "Female",
+      "Password": "Password",
+      "Current Password": "Current Password",
+      "New Password": "New Password",
+      "Confirm Password": "Confirm Password",
+      "SAVE": "SAVE",
+      "Privacy": "Privacy",
+      "allow_my_data": "Allow my data to be anonymised and used for health research. "
+    }
+  }
+}
