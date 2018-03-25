@@ -7,7 +7,9 @@
   </div>
   <chart class="chart" [options]="options" (load)="saveInstance($event.context)">
   </chart>
-
+<!-- <div class="chart-div">
+  <div class="item" *ngFor="let item of data" [attr.data-charge]="item" [class.item0]="item == 0" [class.item1]="item == 1" [class.item2]="item == 2"></div>
+</div> -->
   <div class="overlayer" [class.Show]="isBusy"></div>
   <i class="fa fa-spinner busySplash" [class.Show]="isBusy"></i>
   <div class="error-message" [class.Show]="isError">Data is empty</div>

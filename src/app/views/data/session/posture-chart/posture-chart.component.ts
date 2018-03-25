@@ -39,6 +39,17 @@ export class PostureChartComponent implements OnChanges, OnInit {
     // }
     this.selectedDataSet = this.sharedService.getSelectedDataSet();
     this.getStorageFile(true);
+    // setTimeout(() => {
+    //   let numArr = [1, 1, 1, 2, 1];
+    //   for (let i = 0; i < 100; i++)
+    //     numArr.push(1)
+
+
+    //   console.error(result)
+
+    //   // this.update(test)
+    // }, 1000)
+
   }
   getStorageFile(isInflate: boolean) {
     // const url = `${environment.API_URL}/dataset/download/${this.selectedDataSet.file}${FileType.POSTURE}`;
@@ -70,6 +81,8 @@ export class PostureChartComponent implements OnChanges, OnInit {
   isNumeric(num) {
     return !isNaN(parseFloat(num)) && isFinite(num);
   }
+  data = [];
+  total = 1;
   anaylsysDataBinayry(str) {
     let arr1 = str.split('');
     let numberArr = [];
@@ -78,10 +91,33 @@ export class PostureChartComponent implements OnChanges, OnInit {
       if (this.isNumeric(item)) {
         console.log(item)
         numberArr.push(parseInt(item));
+        this.data.push("item-" + parseInt(item));
       }
     }
+    if (numberArr.length == 0) {
+      this.isBusy = false;
+      this.isError = true;
+      return;
+    }
+    var prev = numberArr[0];
+    this.total = numberArr.length;
+    var result = [{ v: numberArr[0], num: 1 }];
+    let countEqual = 1;
+    for (let i = 1; i < numberArr.length; i++) {
 
-    this.update(numberArr);
+      if (numberArr[i] == prev) {
+        countEqual++;
+      } else {
+
+        result[result.length - 1].num = countEqual
+        countEqual = 1;
+
+        result.push({ v: numberArr[i], num: 1 })
+      }
+      prev = numberArr[i];
+    }
+    result[result.length - 1].num = countEqual
+    this.update(result);
     console.log('posture,', numberArr)
 
   }
@@ -134,11 +170,30 @@ export class PostureChartComponent implements OnChanges, OnInit {
       },
       tooltip: {
         valueSuffix: ' seconds',
-        enabled: false,
-        // formatter: function () {
-        //   let res = self.region[this.point.x].min + '<br>' + self.region[this.point.x].max;
-        //   return res;
-        // }
+        enabled: true,
+        formatter: function () {
+          let duration = self.durationFormat(this.point.y);
+          // let classess = ['up', 'down', 'walk'];
+          // // colors = ['#2b78e4', '#009e0f', '#e539c3'];
+          // let currentColor = (this.point.color + "").toLocaleUpperCase();
+          // let posIndex = 0;
+          // for (var i = 0; i < self.colors.length; i++) {
+          //   if (currentColor.includes(self.colors[i].toLocaleUpperCase())) {
+          //     posIndex = i;
+          //     break;
+          //   }
+          // }
+
+
+          // let images = ["/assets/img/user-up-color.png", "/assets/img/user-down-color.png", "/assets/img/user-walk-color.png"];
+          // let posinfo = self.colors
+          // let pos = `<div style='display: inline-block;
+          // width: 30px;
+          // height: 30px;
+          // background-size: 100%;
+          // background-image:url("${images[posIndex]}")'>d</div>`
+          return duration;
+        }
       },
       plotOptions: {
         bar: {
@@ -179,33 +234,65 @@ export class PostureChartComponent implements OnChanges, OnInit {
     };
   }
   posture = [];
+  durationFormat(mili: number): string {
+    let x = mili > 0 ? mili : 0;
+    // let ms = x % 1000;
+    x = x / 1000;
+    x = Math.floor(x);
+    const secs = x % 60;
 
+    let secsStr = '';
+    if (secs < 10) {
+      secsStr = '0' + secs;
+    } else {
+      secsStr = '' + secs;
+    }
+
+    x = x / 60;
+    x = Math.floor(x);
+    const mins = x % 60;
+
+    let minsStr = '';
+    if (mins < 10) {
+      minsStr = '0' + mins;
+    } else {
+      minsStr = '' + mins;
+    }
+
+    x = x / 60;
+    x = Math.floor(x);
+
+    let hoursStr = '';
+    if (x < 10) {
+      hoursStr = '0' + x;
+    } else { hoursStr = '' + x; }
+    return hoursStr + ':' + minsStr + ':' + secsStr;
+  }
   update(data) {
     this.isBusy = false;
+    var series = [];
     for (var i = 0; i < data.length; i++) {
-      const rand = data[i] % this.colors.length;
+      // const rand = data[i] % this.colors.length;
+      // console.log(rand, typeof (rand))
       const item = {
         name: 'posture',
         data: [
-          { y: 133, color: this.colors[rand] }],
+          { y: data[i].num * this.selectedDataSet.duration / this.total, color: this.colors[data[i].v] }],
         pointWidth: 36
       };
 
-      this.posture.push(item);
+      // this.posture.push(item);
       try {
         if (this.chart != null) {
-          let dd = new EventEmitter<ChartEvent>();
           this.chart.addSeries(item);
-          this.options.series = this.posture;
-          // for (let i = 0; i < this.posture.length; i++) {
-          //   //   this.chart.series[i].setData(this.posture[i]);
-          // }
-          this.chart.series[0].setData(item);
+          series.push(item);
+          // this.chart.series[0].setData(item);
           // this.chart.redraw(null);
         }
       } catch (err) {
         console.error(err);
       }
     }
+    this.options.series = series;
   }
 }

@@ -2,3 +2,18 @@ body {
   padding: 100px 100px;
   outline: 1px red solid;
 }
+.img-info {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: 100%;
+  &.up {
+    background-image: url("/assets/img/user-up-color.png");
+  }
+  &.down {
+    background-image: url("/assets/img/user-down-color.png");
+  }
+  &.walk {
+    background-image: url("/assets/img/user-walk-color.png");
+  }
+}

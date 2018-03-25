@@ -1,34 +1,62 @@
+.img-info {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-size: 100%;
+  &.up {
+    background-image: url("/assets/img/user-up-color.png");
+  }
+  &.down {
+    background-image: url("/assets/img/user-down-color.png");
+  }
+  &.walk {
+    background-image: url("/assets/img/user-walk-color.png");
+  }
+}
+
 .posture-container {
   position: relative;
-  @media only screen and (max-width: 1440px) {
-    .posture-mark {
-      width: 100%;
-      .img-info {
-        display: inline-block;
-        width: 30px;
-        height: 30px;
-        background-size: 100%;
-        &.up {
-          background-image: url("/assets/img/user-up-color.png");
-        }
-        &.down {
-          background-image: url("/assets/img/user-down-color.png");
-        }
-        &.walk {
-          background-image: url("/assets/img/user-walk-color.png");
-        }
-      }
+  .posture-mark {
+    width: 100%;
+  }
+  .chart {
+    -ms-transform: scale(1, 0.8);
+    /* IE 9 */
+    -webkit-transform: scale(1, 0.8);
+    /* Safari */
+    transform: scale(1, 0.8);
+    /*margin-top: -10px;*/
+    width: 100%;
+    display: block;
+    height: 60px;
+  }
+  .chart-div {
+    width: 100%;
+    display: flex;
+    .item {
+      // float: left;
+      height: 35px;
+      flex-grow: 1;
+      flex-basis: 0; // outline: 1px red solid;
+      // border-right: 1px red solid;
     }
-    .chart {
-      -ms-transform: scale(1, 0.8);
-      /* IE 9 */
-      -webkit-transform: scale(1, 0.8);
-      /* Safari */
-      transform: scale(1, 0.8);
-      /*margin-top: -10px;*/
-      width: 100%;
-      display: block;
-      height: 60px;
+    .item[data-charge='item-0'] {
+      background: #2b78e4
+    }
+    .item[data-charge='item-1'] {
+      background: #009e0f
+    }
+    .item[data-charge='item-2'] {
+      background: #e539c3
+    }
+    .item0 {
+      background: #2b78e4
+    }
+    .item1 {
+      background: #009e0f
+    }
+    .item2 {
+      background: #e539c3
     }
   }
   .overlayer {

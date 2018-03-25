@@ -24,7 +24,7 @@ export class EcgChartComponent implements OnInit, OnDestroy {
   cx = 0;
   cy = 0;
 
-  PLOT_HEIGHT = 4096;
+  PLOT_HEIGHT = 4096 + 200;
   intervalID;
   speed = 3;
   DRAW_INTERVAL = 50;

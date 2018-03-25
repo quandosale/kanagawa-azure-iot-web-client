@@ -73,7 +73,7 @@ export class HeartRateChartComponent implements OnInit, AfterViewInit {
     xhr.responseType = 'arraybuffer';
     const self = this;
     xhr.onload = function (event) {
-      if (xhr.status == 404) {
+      if (xhr.status == 404 || xhr.status == 401) {
         console.error('Cannot find heart rate file')
         self.isBusy = false;
         self.isError = true;

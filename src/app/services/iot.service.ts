@@ -65,7 +65,7 @@ export class IOTService {
         }
 
         if (obj.TAG === 'For Socket Debug') {
-           console.log(obj);
+          //  console.log(obj);
         }
       } catch (err) {
         console.error(err);

@@ -124,7 +124,7 @@ export class EcgStaticChartComponent implements OnInit, AfterViewInit, OnDestroy
   }
   downStart = 0;
   file404Error() {
-  
+
   }
   downloadEcgFileWithInflate(url, isRow: boolean) {
     // `url` is the download URL for 'images/stars.jpg'
@@ -134,7 +134,8 @@ export class EcgStaticChartComponent implements OnInit, AfterViewInit, OnDestroy
     xhr.responseType = 'arraybuffer';
     const self = this;
     xhr.onload = function (event) {
-      if (xhr.status == 404) {
+
+      if (xhr.status == 404 || xhr.status == 401) {
         self.isBusy = false;
         self.isNotEnough = true;
 
