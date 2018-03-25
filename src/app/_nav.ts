@@ -12,12 +12,12 @@ export const navigation = [
   {
     name: 'Data',
     url: '/data',
-    icon: 'icon-graph'
+    icon: 'icon-chart'
   },
   {
     name: 'Settings',
     url: '/settings',
-    icon: 'icon-graph'
+    icon: 'icon-settings'
   },
   
 ];
