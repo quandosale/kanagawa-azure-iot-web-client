@@ -46,6 +46,14 @@ export class EcgSessionComponent implements OnInit, OnDestroy {
     // this.downloadFile();
     this.selectedDataSet = this.sharedService.getSelectedDataSet();
     this.selectedDataSet.dateStr = this.dateFormat(this.selectedDataSet.start);
+    this.sub = this.route.params.subscribe(params => {
+      const paramStr = decodeURIComponent(params['param']);
+      try {
+        this.selectedDataSet = JSON.parse(paramStr);
+        this.selectedDataSet.dateStr = this.dateFormat(this.selectedDataSet.start);
+      } catch (ex) { }
+    });
+    
     this.getAFStorageFile();
   }
   // convert date to Formatted String

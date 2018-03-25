@@ -32,7 +32,7 @@ export class MyCalendarComponent implements OnInit, AfterViewInit {
     clickday: Date;
     @Output() dayClickedEvent = new EventEmitter();
     week = false;
-    type = 'month';
+    type = 'all';
     disableIncreate = true;
     activeDayIsOpen = false;
     constructor() { }

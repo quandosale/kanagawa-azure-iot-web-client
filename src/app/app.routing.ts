@@ -25,23 +25,38 @@ export const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+        loadChildren: './views/dashboard/dashboard.module#DashboardModule',
+        data: {
+          title: 'Dashboard'
+        },
       },
       {
         path: 'monitor',
-        component: MonitorComponent
+        component: MonitorComponent,
+        data: {
+          title: 'Monitor'
+        },
       },
       {
         path: 'data',
         component: DataComponent,
+        data: {
+          title: 'Data'
+        },
       },
       {
         path: 'session/:datasetId/:param',
-        component: EcgSessionComponent
+        component: EcgSessionComponent,
+        data: {
+          title: 'Session'
+        },
       },
       {
         path: 'settings',
-        component: SettingComponent
+        component: SettingComponent,
+        data: {
+          title: 'Setting'
+        },
       },
 
     ]

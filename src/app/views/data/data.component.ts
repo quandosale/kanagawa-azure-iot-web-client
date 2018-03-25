@@ -32,7 +32,7 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
   datefrom: number = -1;
   dateto: number = -1;
 
-  busy: Promise<any>;
+  busy = false;
   selectedPatientData: any = {};
 
   m_limit = -1;
@@ -283,14 +283,13 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.makeFirebaseRequest();
   }
 
-
-
-
   getDatas(): void {
     this.preMilli = { year: -1, month: -1, day: -1 };
     this.Data = [];
+    this.busy = true;
     this.dataService.getRecordList([], -1, -1, '-1', this.m_limit)
       .subscribe(res => {
+        this.busy = false;
         console.log(res);
         if (res.success) {
           this.Data = [];
@@ -442,9 +441,12 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.isMonthFilter) {
       this.setDateRange();
+      this.myCalendarComponent.setCalendarType(this.selectedCalendarType.toLocaleLowerCase());
     } else {
       this.datefrom = -1;
       this.dateto = -1;
+
+      this.myCalendarComponent.setCalendarType('all')
     }
     this.filterData();
   }
@@ -513,7 +515,8 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
     this.filterData();
   }
   showDetail(item) {
-    console.log('click', item.datatype, item.datasetId);
+    console.log('click');
+    if (item.datasetId == null) return;
     this.sharedService.setSelectedDataSet(item);
     this.router.navigate(['/session', item.datasetId, encodeURIComponent(JSON.stringify(item))]);
   }

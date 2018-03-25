@@ -17,7 +17,8 @@
           <div class="month-label" translate>Date</div>
         </div>
 
-        <ngx-select [items]="items" [disabled]="!isMonthFilter" [(ngModel)]="selectedCalendarType" [defaultValue]="defaultSelectedCalendarType" (select)="onCalendarTypeSelected($event)"></ngx-select>
+        <ngx-select [items]="items" [disabled]="!isMonthFilter" [(ngModel)]="selectedCalendarType" [defaultValue]="defaultSelectedCalendarType"
+          (select)="onCalendarTypeSelected($event)"></ngx-select>
 
         <div class="calendar">
           <my-calendar (dayClickedEvent)="dayClicked($event)"></my-calendar>
@@ -25,19 +26,21 @@
         <div class="month-section clearfix">
 
           <div class="chk-layer">
-            <input class="chk-month" type="checkbox" [(ngModel)]="isGatewayFilter"  (change)="tapGatewayFilter()" />
+            <input class="chk-month" type="checkbox" [(ngModel)]="isGatewayFilter" (change)="tapGatewayFilter()" />
           </div>
           <div class="month-label" translate>Gateway</div>
         </div>
 
         <div class="input-group">
-          <input class="form-control gateway-search" [(ngModel)]="searchGateway" placeholder="Room 1" [attr.disabled]="isGatewayFilter?null:''" [ngClass]="{'isGatewayFilter': isGatewayFilter}">
+          <input class="form-control gateway-search" [(ngModel)]="searchGateway" placeholder="Room 1" [attr.disabled]="isGatewayFilter?null:''"
+            [ngClass]="{'isGatewayFilter': isGatewayFilter}">
           <div class="input-group-addon">
             <i class="fa fa-search"></i>
           </div>
         </div>
         <div class="select-group gateway-select" [ngClass]="{'isGatewayFilter': isGatewayFilter}">
-          <div class="select-item gateway-item" *ngFor="let gateway of gateways;let index = index" (click)="onSelectGateway(gateway)" [ngClass]="{'isSelected': selectedGateway != null && gateway._id==selectedGateway._id}">
+          <div class="select-item gateway-item" *ngFor="let gateway of gateways;let index = index" (click)="onSelectGateway(gateway)"
+            [ngClass]="{'isSelected': selectedGateway != null && gateway._id==selectedGateway._id}">
             <div *ngIf="checkSearchGateway(gateway)">{{gateway.name}}</div>
           </div>
         </div>
@@ -51,14 +54,16 @@
         </div>
 
         <div class="input-group">
-          <input class="form-control user-search"  [(ngModel)]="searchUser" placeholder="Steven" [attr.disabled]="isUserFilter?null:''" [ngClass]="{'isUserFilter': isUserFilter}">
+          <input class="form-control user-search" [(ngModel)]="searchUser" placeholder="Steven" [attr.disabled]="isUserFilter?null:''"
+            [ngClass]="{'isUserFilter': isUserFilter}">
           <div class="input-group-addon">
             <i class="fa fa-search"></i>
           </div>
         </div>
 
         <div class="select-group gateway-select" [ngClass]="{'isUserFilter': isUserFilter}">
-          <div class="select-item gateway-item" *ngFor="let device of selectedGatewayDevices;let index = index" (click)="onSelectDevice(device)" [ngClass]="{'isSelected': selectedDevice != null && device._id==selectedDevice._id}">
+          <div class="select-item gateway-item" *ngFor="let device of selectedGatewayDevices;let index = index" (click)="onSelectDevice(device)"
+            [ngClass]="{'isSelected': selectedDevice != null && device._id==selectedDevice._id}">
             <div *ngIf="checkSearchDevice(device)">{{device.name}}</div>
           </div>
         </div>
@@ -94,7 +99,9 @@
         </div>
       </div>
       <div class="content col-12">
-
+        <div class="text-center">
+          <i class="fa fa-spinner busySplash" *ngIf="busy"></i>
+        </div>
         <div class="c-row" *ngFor="let item of DataWithDate;let index = index" (click)="showDetail(item)">
           <!-- ./row For Date -->
           <div class="c-row-content detail row">

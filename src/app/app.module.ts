@@ -73,12 +73,12 @@ import {
   DataComponent, EcgSessionComponent, HeartRateChartComponent,
   EcgStaticChartComponent, PostureChartComponent
 } from 'app/views/data/';
-import { MyCalendarComponent, CalendarTypeComponent } from './components/';
+import { MyCalendarComponent } from './components/';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import { ChartModule } from 'angular2-highcharts';
 import { CalendarModule } from 'angular-calendar';
 // busy
-// import { BusyModule, BusyConfig } from 'angular2-busy';
+import { BusyModule, BusyConfig } from 'angular2-busy';
 
 import { AppTranslationModule } from './app.translation.module';
 declare var require: any;
@@ -98,7 +98,7 @@ export function highchartsFactory() {
     AppTranslationModule,
     FormsModule,
     CalendarModule.forRoot(),
-    // BusyModule
+    BusyModule,
     NgxSelectModule
   ],
   declarations: [
@@ -109,7 +109,6 @@ export function highchartsFactory() {
     MonitorComponent,
     EcgChartComponent,
 
-    CalendarTypeComponent,
     MyCalendarComponent,
 
     DataComponent,

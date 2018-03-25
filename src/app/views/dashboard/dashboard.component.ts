@@ -7,7 +7,7 @@ import { GatewayService } from 'app/services';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  gateways: any[] = [];
+  approvedGateways: any[] = [];
   unApprovedGateways: any[] = [];
   selectedGateway: any;
   gatewayEditorOpened = false;
@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getGateways() {
-    this.gateways = [];
+    this.approvedGateways = [];
     this.unApprovedGateways = [];
     this.gatewayService.getGateways().subscribe(res => {
       // this.gateways = res.gateways;
@@ -27,7 +27,7 @@ export class DashboardComponent implements OnInit {
       for (let i = 0; i < res.gateways.length; i++) {
         const gateway_item = res.gateways[i];
         if (gateway_item.isApprove) {
-          this.gateways.push(gateway_item);
+          this.approvedGateways.push(gateway_item);
         } else {
           this.unApprovedGateways.push(gateway_item);
         }
