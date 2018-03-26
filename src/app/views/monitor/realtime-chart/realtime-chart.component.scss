@@ -79,17 +79,8 @@
   }
 }
 
-.device-status,
-.device-status * {
-  // outline: 1px red solid;
-}
-
 .device-status-group {
   width: 100%;
-  &,
-  * {
-    // outline: 1px red solid
-  }
   padding-left: 20px;
   .rssi-img {
     height: 15px;
