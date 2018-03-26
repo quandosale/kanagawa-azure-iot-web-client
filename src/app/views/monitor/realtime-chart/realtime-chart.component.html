@@ -15,50 +15,52 @@
         <h5>Posture</h5>
         <img src="{{postureImageSrc}}" class="img img-circle" [ngClass]="{'red': postureImageSrc=='assets/img/user-what.png'}" />
       </div>
-      <div class="col-9">
-        <div class="device-status row">
-          <!-- <div class="col-6"> -->
-          <!-- <i>Sensor:
-            <b>{{isSensor ? ' ON' : 'OFF'}}</b>
-          </i> -->
+      <div class="device-status-group clearfix">
+        <div class="pull-left">
           <div class="tooltip-custom">
             <img src="{{rssiImageSrc}}" width="20" class="rssi-img" />
             <span *ngIf="rssi==-1000" class="tooltiptext">rssi : Unknown</span>
             <span *ngIf="rssi!=-1000" class="tooltiptext">rssi : {{rssi}}</span>
           </div>
-          <i class="rss i-5 hover-animate"></i>
+        </div>
+        <div class=" pull-left">
           <div class="tooltip-custom">
             <div class="battery hover-animate" [attr.data-charge]="batteryInt" style="margin-top:5px;"></div>
             <span *ngIf="battery==-1" class="tooltiptext">battery : Unknown</span>
             <span *ngIf="battery!=-1" class="tooltiptext">battery : {{battery*10}}%</span>
           </div>
+        </div>
+        <div class=" pull-left">
           <div class="tooltip-custom">
             <span class="temp-value hover-animate">
               <b>{{temperature}}&#8451;</b>
             </span>
           </div>
-          <!-- </div> -->
-          <!-- <div class="col-6"> -->
+        </div>
+
+        <div class="pull-left">
           <i class="fa fa-heartbeat hover-animate"></i>
           <span class="heartbeat-value hover-animate">
             <b>{{heartrate
               < 0 ? "-" : heartrate}} bpm</b>
           </span>
-          <!-- </div> -->
-
         </div>
-      </div>
-      <div class="col-3 ">
-        <div class="row text-right">
-          <!-- Rounded switch -->
+        <!-- </div> -->
+        <!-- Rounded switch -->
+        <div class="pull-right">
+          <span *ngIf="isRecord" style="vertical-align: top;">{{recordingDuration}}</span>
           <span class="form-group1">
-            <span class="switch switch-sm">
-              <input type="checkbox" class="switch" [attr.id]="device.mac" [(ngModel)]="isRecord" (change)="onSwitchRecord()"  [attr.disabled]="(!isRecord && ecgChartComponent.data.length==0)? '' : null">
+            <span class="switch switch-sm" style="margin-right: 68px;">
+              <input type="checkbox" class="switch" [attr.id]="device.mac" [(ngModel)]="isRecord" (change)="onSwitchRecord()" [attr.disabled]="(!isRecord && ecgChartComponent.data.length==0)? '' : null">
               <label [attr.for]="device.mac">Record</label>
             </span>
+
           </span>
         </div>
+
       </div>
+      <!--  -->
+
     </div>
   </div>
 </div>

@@ -3,6 +3,7 @@ import { Device, IOTService, SharedService, AlarmSetting, Gateway, DataService, 
 import { EcgChartComponent } from 'app/components/ecg-chart/ecg-chart.component';
 import { Subscription } from 'rxjs/Subscription';
 import * as requestInterval from 'request-interval';
+
 // import * as azureStorage from 'azure-storage';
 // var azure = require('azure-storage');
 @Component({
@@ -36,12 +37,14 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
     private sharedService: SharedService,
     private dataService: DataService) { }
   isRecord = false;
+  recordingDuration = '00:00:00';
   preIsSensor = false;
   ngOnInit() {
 
     this.setting = this.sharedService.getAlarmSetting();
     this.postureImageSrc = this.getPostureImg();
     this.recordDataset = this.sharedService.getRecordingStatus(this.device._id);
+    console.log(this.device.name, 'get', this.device._id, this.recordDataset)
     this.isRecord = this.device.isRecord;
     if (this.recordDataset == null && this.isRecord) {
       // this.isRecord = false;
@@ -96,9 +99,17 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
       }
     });
     // setTimeout(this.simulate(), 40);
-    //  requestInterval(190, () => {
-    //   this.simulate();
-    // });
+    requestInterval(1000, () => {
+      this.calcRecordingDuration();
+    });
+  }
+  calcRecordingDuration() {
+    if (!this.isRecord) { return; }
+    if (!this.recordDataset) { console.log(this.device.name, this.isRecord, this.recordDataset); return; }
+    let start = this.recordDataset.start;
+    let now = new Date().getTime();
+    let duration = now - start;
+    this.recordingDuration = this.durationFormat(duration);
   }
   soundPosture() {
     if (!this.setting.isAlarmPosture) {
@@ -133,6 +144,7 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
       this.recordDataset.file = `${this.device._id}_${this.recordDataset.start}`;
       this.dataService.startRecord(this.recordDataset)
         .subscribe(res => {
+          console.log(this.device.name, 'save', this.device._id, this.recordDataset)
           this.sharedService.setRecordingStatus(this.device._id, this.recordDataset);
           console.log(res);
         })
@@ -210,5 +222,39 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
     } else {
       this.isFlashDisconnected = false;
     }
+  }
+  durationFormat(mili: number): string {
+    let x = mili > 0 ? mili : 0;
+    // let ms = x % 1000;
+    x = x / 1000;
+    x = Math.floor(x);
+    const secs = x % 60;
+
+    let secsStr = '';
+    if (secs < 10) {
+      secsStr = '0' + secs;
+    } else {
+      secsStr = '' + secs;
+    }
+
+    x = x / 60;
+    x = Math.floor(x);
+    const mins = x % 60;
+
+    let minsStr = '';
+    if (mins < 10) {
+      minsStr = '0' + mins;
+    } else {
+      minsStr = '' + mins;
+    }
+
+    x = x / 60;
+    x = Math.floor(x);
+
+    let hoursStr = '';
+    if (x < 10) {
+      hoursStr = '0' + x;
+    } else { hoursStr = '' + x; }
+    return hoursStr + ':' + minsStr + ':' + secsStr;
   }
 }
