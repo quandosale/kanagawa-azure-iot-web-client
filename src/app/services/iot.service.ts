@@ -10,7 +10,7 @@ export class IOTService {
   ws: WebSocket;
 
   iotData = new Subject<iotData>();
-
+  iotFirmwareDownloadProgress = new Subject<any>();
   constructor(private apiService: ApiService) { }
 
   sendCloudToDeviceMessage(deviceId: string, methodName: string, data: any): Observable<any> {
@@ -63,6 +63,10 @@ export class IOTService {
           // Received ECG Data
           this.analysis(obj.data);
         }
+        if (obj.TAG === 'FIRMWARE_DOWNLOADING') {
+          console.log(obj);
+          this.iotFirmwareDownloadProgress.next(obj.data);
+        }
 
         if (obj.TAG === 'For Socket Debug') {
           //  console.log(obj);
@@ -89,6 +93,10 @@ export class IOTService {
   dataListner() {
     return this.iotData.asObservable();
   }
+  firmwareDownloadListner() {
+    return this.iotFirmwareDownloadProgress.asObservable();
+  }
+
 }
 
 export class iotData {

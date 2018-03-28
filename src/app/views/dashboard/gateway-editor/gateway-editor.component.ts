@@ -32,12 +32,28 @@ export class GatewayEditorComponent implements OnInit {
   // for Device ADD/Remove (object with mac address)
   addedInfo = []
   removedInfo = []
-
+  downloadProcess = '';
   constructor(private gatewayService: GatewayService, private iotService: IOTService) { }
-
+  percentFormat(percent): string {
+    var pec: number = percent ? percent : 0;
+    var pecNum = pec.toFixed(0) + '%';
+    return pecNum;
+  }
   ngOnInit() {
     this.gateway = Object.assign({}, this.gateway);
     this.gatewayName = this.gateway.name;
+    var self = this;
+    this.iotService.firmwareDownloadListner()
+      .subscribe(data => {
+        if (data.emitter === this.gateway.deviceId) {
+          console.log(data);
+          if (data.completed) {
+            
+            // return;
+          }
+          self.downloadProcess = self.percentFormat(data.percent);
+        }
+      });
   }
 
   onTapScan() {

@@ -22,26 +22,31 @@
       </div>
       <div class="row" style="margin-top:20px;">
         <label class="col-md-3 form-control-label" for="text-input">Firmware</label>
-        <div class="col-md-4">
-          1.2.3
+        <div class="col-md-2">
+          <!-- 1.2.3 -->
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
+          <!-- 1.2.3 -->
+        </div>
+        <div class="col-md-3">
           <button class="btn btn-danger btn-sm text-scan scan-btn" (click)="onTapCheckUpdate()">Check & Update</button>
         </div>
-
+        <div class="col-md-2">
+          <span *ngIf="downloadProcess.length != 0">{{downloadProcess}}</span>
+        </div>
       </div>
-
+      <!-- 
       <div class="row" style="margin-top:20px;">
         <label class="col-md-3 form-control-label" for="text-input"></label>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <button class="btn btn-danger btn-sm text-scan scan-btn" (click)="onTapReboot()">Reboot</button>
 
         </div>
-        <div class="col-md-4">
+         <div class="col-md-3">
           <button class="btn btn-danger btn-sm text-scan scan-btn" (click)="onTapForceUpdate()">Force Update</button>
         </div>
 
-      </div>
+      </div> -->
     </div>
   </div>
   <!-- [BEGIN devices body] -->

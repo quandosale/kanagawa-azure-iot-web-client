@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { GatewayService } from 'app/services';
+import { GatewayService, IOTService } from 'app/services';
 
 @Component({
   templateUrl: 'dashboard.component.html',
@@ -12,10 +12,11 @@ export class DashboardComponent implements OnInit {
   selectedGateway: any;
   gatewayEditorOpened = false;
   isApprove = false;
-  constructor(private gatewayService: GatewayService) { }
+  constructor(private gatewayService: GatewayService, private iotService: IOTService) { }
 
   ngOnInit(): void {
     this.getGateways();
+    this.iotService.listenMessages();
   }
 
   getGateways() {
