@@ -58,7 +58,48 @@ export class GatewayEditorComponent implements OnInit {
       }
     });
   }
-
+  onTapReboot() {
+    this.iotService.sendCloudToDeviceMessage(this.gateway.deviceId, 'reboot', {}).subscribe(res => {
+      // this.isLoading = false;
+      console.log(res);
+      if (!res.success) {
+        // this.scanError = true;
+        setTimeout(() => {
+          // this.scanError = false;
+        }, 5000);
+      } else {
+        console.log(res.result.payload.data);
+      }
+    });
+  }
+  onTapCheckUpdate() {
+    this.iotService.sendCloudToDeviceMessage(this.gateway.deviceId, 'onFirmwareUpdate', false).subscribe(res => {
+      // this.isLoading = false;
+      console.log(res);
+      if (!res.success) {
+        // this.scanError = true;
+        setTimeout(() => {
+          // this.scanError = false;
+        }, 5000);
+      } else {
+        console.log(res.result.payload.data);
+      }
+    });
+  }
+  onTapForceUpdate() {
+    this.iotService.sendCloudToDeviceMessage(this.gateway.deviceId, 'onFirmwareUpdate', true).subscribe(res => {
+      // this.isLoading = false;
+      console.log(res);
+      if (!res.success) {
+        // this.scanError = true;
+        // setTimeout(() => {
+        //   this.scanError = false;
+        // }, 5000);
+      } else {
+        console.log(res.result.payload.data);
+      }
+    });
+  }
   onTapAdd() {
     this.existsError = false;
     this.gateway.devices.forEach(device => {
