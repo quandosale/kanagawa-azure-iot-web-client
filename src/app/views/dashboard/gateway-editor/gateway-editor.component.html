@@ -20,19 +20,32 @@
           <input class="form-control" name="gateway-name" placeholder="Gateway Name" type="text" [(ngModel)]="gateway.name">
         </div>
       </div>
-      <div class="row" style="margin-top:20px;">
-        <label class="col-md-3 form-control-label" for="text-input">Firmware</label>
-        <div class="col-md-2">
-          <!-- 1.2.3 -->
+      <div class="firmware-update-group">
+        <div class="row " style="margin-top:20px;">
+          <label class="col-md-3 form-control-label" for="text-input">Firmware</label>
+          <div class="col-md-3 bg-danger1">
+            Current: {{gateway.firmware}}
+          </div>
+          <div class="col-md-3 bg-warning1">
+            New: {{newFirmware}}
+          </div>
+          <div class="col-md-3 bg-success1">
+            <button class="btn btn-danger btn-sm text-scan scan-btn" (click)="onTapCheckUpdate()" [disabled]="isLoadingFirmwareUpdate || isErrorFirmwareUpdate">Update</button>
+          </div>
         </div>
-        <div class="col-md-2">
-          <!-- 1.2.3 -->
-        </div>
-        <div class="col-md-3">
-          <button class="btn btn-danger btn-sm text-scan scan-btn" (click)="onTapCheckUpdate()">Check & Update</button>
-        </div>
-        <div class="col-md-2">
-          <span *ngIf="downloadProcess.length != 0">{{downloadProcess}}</span>
+        <div class="row" style="margin-top:10px;">
+          <div class="col-md-3 bg-danger1">
+
+          </div>
+          <div class="col-md-9 bg-warning1 row-loading-info show">
+            <div class="text-center">
+              <i class="fa fa-spinner small busySplash" *ngIf="isLoadingFirmwareUpdate"></i>
+            </div>
+            <span *ngIf="downloadProcess.length != 0">Downloading ... {{downloadProcess}}</span>
+            <span *ngIf="isErrorFirmwareUpdate" style="color:red">Could not command gateway to update devices.
+              <br>Please make sure the gateway is live.</span>
+
+          </div>
         </div>
       </div>
       <!-- 

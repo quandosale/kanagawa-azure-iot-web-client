@@ -11,6 +11,10 @@ export class GatewayService {
         return this.apiService.get('/gateways');
     }
 
+    getNewGatewayFirmwareVersion(): Observable<any> {
+        return this.apiService.get('/iot/firmware-version');
+    }
+
     deleteGateway(deviceId: string): Observable<any> {
         return this.apiService.delete(`/gateways/${deviceId}`);
     }
@@ -37,4 +41,5 @@ export class Gateway {
     deviceId: string;
     deviceKey: string;
     devices: Device[];
+    firmware: string;
 }

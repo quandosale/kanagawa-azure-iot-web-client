@@ -20,10 +20,17 @@ export class GatewayEditorComponent implements OnInit {
   selectedMacAddress: string;
 
   isLoading = false;
+
   isSaving = false;
 
   scanError = false;
   existsError = false;
+
+  // gateway firmware
+  isLoadingFirmwareUpdate = false;
+  isErrorFirmwareUpdate = false;
+  currentFirmware = '1.0.0';
+  newFirmware = '1.0.0';
 
   deviceEditorOpened = false;
 
@@ -48,12 +55,20 @@ export class GatewayEditorComponent implements OnInit {
         if (data.emitter === this.gateway.deviceId) {
           console.log(data);
           if (data.completed) {
-            
+            self.isLoadingFirmwareUpdate = false;
             // return;
           }
           self.downloadProcess = self.percentFormat(data.percent);
         }
       });
+
+    //get firmware version
+    this.gatewayService.getNewGatewayFirmwareVersion()
+      .subscribe(data => {
+        console.log(data);
+        this.newFirmware = data.RPI_GATEWAY_VERSION;
+      });
+
   }
 
   onTapScan() {
@@ -89,33 +104,23 @@ export class GatewayEditorComponent implements OnInit {
     });
   }
   onTapCheckUpdate() {
+    this.isLoadingFirmwareUpdate = true;
     this.iotService.sendCloudToDeviceMessage(this.gateway.deviceId, 'onFirmwareUpdate', false).subscribe(res => {
-      // this.isLoading = false;
+
       console.log(res);
       if (!res.success) {
-        // this.scanError = true;
+        this.isLoadingFirmwareUpdate = false;
+        this.isErrorFirmwareUpdate = true;
         setTimeout(() => {
-          // this.scanError = false;
+          this.isErrorFirmwareUpdate = false;
         }, 5000);
       } else {
+        // this.isLoadingFirmwareUpdate = false;
         console.log(res.result.payload.data);
       }
     });
   }
-  onTapForceUpdate() {
-    this.iotService.sendCloudToDeviceMessage(this.gateway.deviceId, 'onFirmwareUpdate', true).subscribe(res => {
-      // this.isLoading = false;
-      console.log(res);
-      if (!res.success) {
-        // this.scanError = true;
-        // setTimeout(() => {
-        //   this.scanError = false;
-        // }, 5000);
-      } else {
-        console.log(res.result.payload.data);
-      }
-    });
-  }
+
   onTapAdd() {
     this.existsError = false;
     this.gateway.devices.forEach(device => {
