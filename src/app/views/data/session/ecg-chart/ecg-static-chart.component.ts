@@ -1,11 +1,10 @@
 import { AFSet } from './../../../../services/AccData';
-import { FileType } from './../../../../common/FileType';
 import { environment } from '../../../../../environments/environment';
 import {
   Component, OnInit, AfterViewInit,
   Input, ElementRef, OnDestroy, Output, EventEmitter
 } from '@angular/core';
-import { GatewayService, SharedService, MitBit } from '../../../../services/index';
+import { GatewayService, SharedService, MitBit, FileType } from '../../../../services/index';
 
 // import { EcgSimulator } from './ecg-simulate';
 

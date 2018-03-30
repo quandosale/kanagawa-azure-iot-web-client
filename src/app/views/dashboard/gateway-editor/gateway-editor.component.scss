@@ -64,20 +64,26 @@
   transition: all ease 1.2s;
 }
 
+.fa-spinner {
+  font-size: 40px;
+  line-height: 40px;
+  height: 40px;
+}
+
 .busySplash {
-  -webkit-animation-name: spin;
+  -webkit-animation-name: rotateSpin;
   -webkit-animation-duration: 1000ms;
   -webkit-animation-iteration-count: infinite;
   -webkit-animation-timing-function: linear;
-  -moz-animation-name: spin;
+  -moz-animation-name: rotateSpin;
   -moz-animation-duration: 1000ms;
   -moz-animation-iteration-count: infinite;
   -moz-animation-timing-function: linear;
-  -ms-animation-name: spin;
+  -ms-animation-name: rotateSpin;
   -ms-animation-duration: 1000ms;
   -ms-animation-iteration-count: infinite;
   -ms-animation-timing-function: linear;
-  animation-name: spin;
+  animation-name: rotateSpin;
   animation-duration: 1000ms;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
@@ -93,7 +99,7 @@
   overflow-y: auto;
 }
 
-@-ms-keyframes spin {
+@-ms-keyframes rotateSpin {
   from {
     -ms-transform: rotate(0deg);
   }
@@ -102,7 +108,7 @@
   }
 }
 
-@-moz-keyframes spin {
+@-moz-keyframes rotateSpin {
   from {
     -moz-transform: rotate(0deg);
   }
@@ -111,7 +117,7 @@
   }
 }
 
-@-webkit-keyframes spin {
+@-webkit-keyframes rotateSpin {
   from {
     -webkit-transform: rotate(0deg);
   }
@@ -120,11 +126,90 @@
   }
 }
 
-@keyframes spin {
+@keyframes rotateSpin {
   from {
     transform: rotate(0deg);
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+.refresh-group {
+  margin-right: 10px;
+  cursor: pointer;
+  :hover.fa-refresh {
+    transform: scale(1.1);
+  }
+  .fa-refresh {
+    font-size: 24px;
+    &.isRefreshLoading {
+      -webkit-animation-name: rotateSpin;
+      -webkit-animation-duration: 1000ms;
+      -webkit-animation-iteration-count: infinite;
+      -webkit-animation-timing-function: linear;
+      -moz-animation-name: rotateSpin;
+      -moz-animation-duration: 1000ms;
+      -moz-animation-iteration-count: infinite;
+      -moz-animation-timing-function: linear;
+      -ms-animation-name: rotateSpin;
+      -ms-animation-duration: 1000ms;
+      -ms-animation-iteration-count: infinite;
+      -ms-animation-timing-function: linear;
+      animation-name: rotateSpin;
+      animation-duration: 1000ms;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+    }
+  }
+}
+
+.tooltip-custom {
+  display: inline-block;
+  &:hover .tooltiptext {
+    visibility: visible;
+  }
+  .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    right: 26px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+}
+
+.connected-status {
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  border-radius: 50%;
+  background: #a8a8af;
+  &.isConnected {
+    background: #4ab615;
+  }
+  &.isFlash {
+    background: #d9534f;
+    -webkit-animation-name: rotateSpin;
+    -webkit-animation-duration: 1000ms;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-name: rotateSpin;
+    -moz-animation-duration: 1000ms;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: linear;
+    -ms-animation-name: rotateSpin;
+    -ms-animation-duration: 1000ms;
+    -ms-animation-iteration-count: infinite;
+    -ms-animation-timing-function: linear;
+    animation-name: rotateSpin;
+    animation-duration: 1000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
   }
 }

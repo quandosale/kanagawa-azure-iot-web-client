@@ -3,10 +3,9 @@ import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 // services
-import { GatewayService, SharedService } from '../../../services/index';
+import { GatewayService, SharedService ,FileType} from '../../../services/index';
 
 declare var $: any;
-import { FileType } from './../../../common/FileType';
 import { environment } from '../../../../environments/environment';
 import { EcgStaticChartComponent } from './ecg-chart/ecg-static-chart.component';
 import { HeartRateChartComponent } from './heart-rate-chart/heart-rate-chart.component';

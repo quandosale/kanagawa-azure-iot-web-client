@@ -5,3 +5,4 @@ export * from './data.services';
 export * from './data';
 export * from './alarm-setting';
 export * from './MitBit';
+export * from './FileType';

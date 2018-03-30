@@ -12,6 +12,16 @@
   <div class="card">
     <div class="card-header">
       Basic
+      <div class="pull-right tooltip-custom">
+        <span class="connected-status" [ngClass]="{'isConnected' : isConnected }"></span>
+        <span *ngIf="isConnected" class="tooltiptext">Gateway connected</span>
+        <span *ngIf="!isConnected" class="tooltiptext">Gateway disconnected</span>
+      </div>
+      <div class="refresh-group pull-right tooltip-custom" (click)="onTapRefresh()">
+        <i class="fa fa-refresh" [ngClass]="{'isRefreshLoading' : isRefreshLoading}"></i>
+        <span class="tooltiptext">Refresh</span>
+      </div>
+
     </div>
     <div class="card-body">
       <div class="row">
@@ -30,7 +40,7 @@
             New: {{newFirmware}}
           </div>
           <div class="col-md-3 bg-success1">
-            <button class="btn btn-danger btn-sm text-scan scan-btn" (click)="onTapCheckUpdate()" [disabled]="isLoadingFirmwareUpdate || isErrorFirmwareUpdate">Update</button>
+            <button class="btn btn-danger btn-sm text-scan scan-btn" (click)="firmwareUpdateModal.show();" [disabled]="!isConnected || isLoadingFirmwareUpdate || isErrorFirmwareUpdate">Update</button>
           </div>
         </div>
         <div class="row" style="margin-top:10px;">
@@ -41,10 +51,13 @@
             <div class="text-center">
               <i class="fa fa-spinner small busySplash" *ngIf="isLoadingFirmwareUpdate"></i>
             </div>
-            <span *ngIf="downloadProcess.length != 0">Downloading ... {{downloadProcess}}</span>
+            <span *ngIf="downloadProcess.length != 0">Downloading ... {{downloadProcess}} ({{firmwareSize}})</span>
             <span *ngIf="isErrorFirmwareUpdate" style="color:red">Could not command gateway to update devices.
               <br>Please make sure the gateway is live.</span>
-
+            <span *ngIf="message.length > 0" class="text-danger">
+              {{message}}
+              <a href="#" (click)="onTapFirmaareUpdateForce()">Force ?</a>
+            </span>
           </div>
         </div>
       </div>
@@ -74,7 +87,7 @@
           <div class="scan-icon-group loading text-center">
             <i class="fa fa-spinner" [class.busySplash]="isLoading"></i>
             <div>
-              <button class="btn btn-primary btn-sm text-scan scan-btn" (click)="onTapScan()" [disabled]="isLoading">
+              <button class="btn btn-primary btn-sm text-scan scan-btn" (click)="onTapScan()" [disabled]="!isConnected || isLoading ">
                 Scan
               </button>
             </div>
@@ -191,6 +204,30 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()">Close</button>
         <button type="button" class="btn btn-danger" (click)="onDeleteDevice()">Confirm</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div bsModal #firmwareUpdateModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true" [config]="{backdrop: 'static'}">
+  <div class="modal-dialog modal-danger" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Please Confirm</h4>
+        <button type="button" class="close" (click)="firmwareUpdateModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure to update firmware?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="firmwareUpdateModal.hide()">Close</button>
+        <button type="button" class="btn btn-danger" (click)="onfirmwareUpdateModalConfirm()">Confirm</button>
       </div>
     </div>
     <!-- /.modal-content -->

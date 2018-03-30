@@ -13,6 +13,8 @@ export class GatewayEditorComponent implements OnInit {
   @Input() gateway: Gateway;
   @Output() close = new EventEmitter();
   @ViewChild('dangerModal') dangerModal;
+  @ViewChild('firmwareUpdateModal') firmwareUpdateModal;
+
 
   gatewayName = '';
   scannedDevices = [];
@@ -31,6 +33,9 @@ export class GatewayEditorComponent implements OnInit {
   isErrorFirmwareUpdate = false;
   currentFirmware = '1.0.0';
   newFirmware = '1.0.0';
+  // for firmware downloading progres
+  downloadProcess = '';
+  firmwareSize = '';
 
   deviceEditorOpened = false;
 
@@ -39,16 +44,81 @@ export class GatewayEditorComponent implements OnInit {
   // for Device ADD/Remove (object with mac address)
   addedInfo = []
   removedInfo = []
-  downloadProcess = '';
+
+
+
+  // for gateway connected status
+  isConnected = false;
+  isRefreshLoading = false;
+
   constructor(private gatewayService: GatewayService, private iotService: IOTService) { }
+
+  ngOnInit() {
+    this.gateway = Object.assign({}, this.gateway);
+    this.gatewayName = this.gateway.name;
+    this._initFimrwareDownloadListner();
+    this._getLastGatewayFirmwareVersion();
+    this._checkConnectStatus();
+    this._initGatewayStartedListner();
+  }
+
   percentFormat(percent): string {
     var pec: number = percent ? percent : 0;
     var pecNum = pec.toFixed(0) + '%';
     return pecNum;
   }
-  ngOnInit() {
-    this.gateway = Object.assign({}, this.gateway);
-    this.gatewayName = this.gateway.name;
+
+  storageFormat(n: number): string {
+    if (n === 0) {
+      return '0 bytes';
+    } else if (n < 1024) {
+      return '' + n + ' bytes';
+    }
+    if (1024 <= n && n < 1024 * 1024) {
+      n = n / 1024;
+      let r = '' + n.toFixed(0) + ' KB';
+      return r;
+    }
+    if (1024 * 1024 <= n && n < 1024 * 1024 * 1024) {
+      n = n / 1024 / 1024;
+      let r = '' + n.toFixed(0) + ' MB';
+      return r;
+    }
+    if (1024 * 1024 * 1024 <= n && n < 1024 * 1024 * 1024 * 1024) {
+      n = n / 1024 / 1024 / 1024;
+      let r = '' + n.toFixed(0) + ' GB';
+      return r;
+    }
+
+    return '0 bytes';
+  }
+  _checkConnectStatus() {
+    this.isRefreshLoading = true;
+    this.iotService.sendCloudToDeviceMessage(this.gateway.deviceId, 'checkGatewayConnected', {}).subscribe(res => {
+      this.isRefreshLoading = false;
+      console.log(res);
+      if (!res.success) {
+        this.isConnected = false;
+      } else {
+        this.isConnected = true;
+      }
+    });
+  }
+  onTapRefresh() {
+    this._checkConnectStatus();
+    // this._getLastGatewayFirmwareVersion();
+  }
+  _initGatewayStartedListner() {
+    var self = this;
+    this.iotService.gatewayStartListner()
+      .subscribe(data => {
+        if (data.emitter === this.gateway.deviceId) {
+          console.error(data);
+          self.gateway.firmware = data.firmware;
+        }
+      });
+  }
+  _initFimrwareDownloadListner() {
     var self = this;
     this.iotService.firmwareDownloadListner()
       .subscribe(data => {
@@ -56,20 +126,24 @@ export class GatewayEditorComponent implements OnInit {
           console.log(data);
           if (data.completed) {
             self.isLoadingFirmwareUpdate = false;
-            // return;
+            self.downloadProcess = '';
+            self._checkConnectStatus();
+            return;
           }
           self.downloadProcess = self.percentFormat(data.percent);
+          self.isLoadingFirmwareUpdate = true;
+          self.firmwareSize = self.storageFormat(data.totalLen);
         }
       });
-
-    //get firmware version
+  }
+  _getLastGatewayFirmwareVersion() {
     this.gatewayService.getNewGatewayFirmwareVersion()
       .subscribe(data => {
         console.log(data);
         this.newFirmware = data.RPI_GATEWAY_VERSION;
       });
-
   }
+
 
   onTapScan() {
     this.scannedDevices = [];
@@ -103,20 +177,38 @@ export class GatewayEditorComponent implements OnInit {
       }
     });
   }
-  onTapCheckUpdate() {
+  message = '';
+  onfirmwareUpdateModalConfirm() {
+    this.firmwareUpdateModal.hide();
+    this.sendFirmwareUpdateCommand(false);
+  }
+  onTapFirmaareUpdateForce() {
+    this.sendFirmwareUpdateCommand(true);
+  }
+  sendFirmwareUpdateCommand(isMust) {
     this.isLoadingFirmwareUpdate = true;
-    this.iotService.sendCloudToDeviceMessage(this.gateway.deviceId, 'onFirmwareUpdate', false).subscribe(res => {
+    this.iotService.sendCloudToDeviceMessage(this.gateway.deviceId, 'onFirmwareUpdate', isMust).subscribe(res => {
 
       console.log(res);
+      this.isLoadingFirmwareUpdate = false;
       if (!res.success) {
-        this.isLoadingFirmwareUpdate = false;
+
         this.isErrorFirmwareUpdate = true;
         setTimeout(() => {
           this.isErrorFirmwareUpdate = false;
         }, 5000);
       } else {
-        // this.isLoadingFirmwareUpdate = false;
         console.log(res.result.payload.data);
+        if (res.result.payload.data.success) {
+          console.log('Success, begin downloading ...');
+        } else {
+          console.error(res.result.payload.data.error);
+          this.message = res.result.payload.data.error;
+          setTimeout(() => {
+            this.message = '';
+          }, 5000);
+        }
+
       }
     });
   }

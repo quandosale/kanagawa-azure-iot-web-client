@@ -1,6 +1,5 @@
-import { FileType } from '../../../../common/FileType';
 import { Component, OnInit, Output, EventEmitter, Input, AfterViewInit, ElementRef } from '@angular/core';
-import { GatewayService, SharedService } from '../../../../services/index';
+import { GatewayService, SharedService,FileType } from '../../../../services/index';
 import { environment } from '../../../../../environments/environment';
 declare let $: any;
 @Component({

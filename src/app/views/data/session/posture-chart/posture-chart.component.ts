@@ -1,9 +1,8 @@
 import { Component, Input, OnChanges, OnInit, EventEmitter } from '@angular/core';
-import { SharedService } from '../../../../services/index';
+import { SharedService ,FileType} from '../../../../services/index';
 import { ChartComponent, } from 'angular2-highcharts';
 import { ChartEvent } from 'angular2-highcharts/dist/ChartEvent';
 import { environment } from '../../../../../environments/environment';
-import { FileType } from '../../../../common/FileType';
 @Component({
   selector: 'posture-chart',
   templateUrl: './posture-chart.component.html',

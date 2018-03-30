@@ -11,6 +11,7 @@ export class IOTService {
 
   iotData = new Subject<iotData>();
   iotFirmwareDownloadProgress = new Subject<any>();
+  iotGatewayConnected = new Subject<any>();
   constructor(private apiService: ApiService) { }
 
   sendCloudToDeviceMessage(deviceId: string, methodName: string, data: any): Observable<any> {
@@ -71,6 +72,13 @@ export class IOTService {
         if (obj.TAG === 'For Socket Debug') {
           //  console.log(obj);
         }
+        if (obj.TAG === 'IOTHUB_CONNECTED') {
+          this.iotGatewayConnected.next(obj.data);
+        }
+        if (obj.TAG === 'IOTHUB_CONNECT_WAKEUP') {
+          console.error(obj.data);
+        }
+        
       } catch (err) {
         console.error(err);
       }
@@ -97,6 +105,9 @@ export class IOTService {
     return this.iotFirmwareDownloadProgress.asObservable();
   }
 
+  gatewayStartListner() {
+    return this.iotGatewayConnected.asObservable();
+  }
 }
 
 export class iotData {
