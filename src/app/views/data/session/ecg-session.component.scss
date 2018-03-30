@@ -12,26 +12,27 @@
 //   transition: all ease 0.3s;
 // }
 .session {
-  // background: #fff;
+  background: #fff;
   padding-left: 30px;
   /* max-width: 1100px; */
   // padding-right: 30px;
   border-radius: 4px; // margin-left: 30px;
   .max-width-960 {
-    max-width: 960px;
-    // outline: 1px red solid;
+    max-width: 960px; // outline: 1px red solid;
   }
   .top-20 {
     margin-top: 20px;
   }
-  .label-af{
+  .label-af {
     margin-top: 20px;
     line-height: 30px;
   }
 }
-.af{
+
+.af {
   color: #000;
 }
+
 input[type=checkbox] {
   /* Double-sized Checkboxes */
   -ms-transform: scale(1.5);
@@ -44,6 +45,7 @@ input[type=checkbox] {
   /* Opera */
   padding: 10px;
 }
+
 @media (min-width:768px) {
   .session {
     margin-left: 30px;
@@ -133,8 +135,7 @@ input[type=checkbox] {
 
 .time-in-hr-label {
   border-bottom: 1px gray solid; // padding-left: 15px;
-  color: #000;
-  // margin-left: -15px;
+  color: #000; // margin-left: -15px;
 }
 
 .heart-rate-label {

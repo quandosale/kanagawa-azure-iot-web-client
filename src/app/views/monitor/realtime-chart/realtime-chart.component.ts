@@ -142,6 +142,7 @@ export class RealtimeChartComponent implements OnInit, OnDestroy {
       this.recordDataset.deviceId = this.device._id;
       this.recordDataset.datasetId = `${this.device._id}${this.recordDataset.start}`;
       this.recordDataset.file = `${this.device._id}_${this.recordDataset.start}`;
+      this.recordDataset.duration = -1;
       this.dataService.startRecord(this.recordDataset)
         .subscribe(res => {
           console.log(this.device.name, 'save', this.device._id, this.recordDataset)

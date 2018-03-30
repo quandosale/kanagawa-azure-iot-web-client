@@ -104,7 +104,7 @@
         </div>
         <div class="c-row" *ngFor="let item of DataWithDate;let index = index" (click)="showDetail(item)">
           <!-- ./row For Date -->
-          <div class="c-row-content detail row">
+          <div class="c-row-content detail row"  [class.bold]="checkDatasetType(item)">
             <div class="col-sm-4">
               <div>{{item.time}}</div>
             </div>

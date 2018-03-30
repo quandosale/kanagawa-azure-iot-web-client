@@ -223,7 +223,7 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   _sortDuration() {
     this.DataForDisplay.sort((a: any, b: any) => {
-      if (this.sortUpDate) {
+      if (this.sortUpDuration) {
         return a.duration - b.duration;
       } else {
         return b.duration - a.duration;
@@ -242,6 +242,7 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
         datasetDate.time = dataset.datetime;
         datasetDate.gatewayId = {};
         datasetDate.deviceId = {};
+        datasetDate.type = 'DateInfo'
 
         this.DataWithDate.push(datasetDate);
         this.DataWithDate.push(dataset);
@@ -304,6 +305,7 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
             console.log(element.deviceId.currentRecordingDatasetId)
             // Exclude Current Recording Element
             try {
+              if (element.duration == -1) { continue; }
               if (element.deviceId.isRecord) {
                 let currentRecordingDatasetId = element.deviceId.currentRecordingDatasetId;
                 if (currentRecordingDatasetId === element.datasetId) continue;
@@ -347,6 +349,15 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
     const mm = MONTH[month];
     const day = dateTime.getDate();
     const dd = (day / 10 >= 1) ? day : ('0' + day);
+
+    const nowDate = new Date();
+    const nowYY = nowDate.getFullYear();
+    const nowMonth = nowDate.getMonth();
+    const nowDD = nowDate.getDate();
+    if (yyyy == nowYY && month == nowMonth && dd == nowDD) {
+      return "Today";
+    }
+
 
     const result: String = `${dayStr} ${mm} ${dd}, ${yyyy}`;
     return result;
@@ -572,5 +583,8 @@ export class DataComponent implements OnInit, AfterViewInit, OnDestroy {
     if (device.name == null) return false;
     return device.name.toLocaleLowerCase().includes(this.searchUser.toLocaleLowerCase())
   }
-
+  checkDatasetType(dataset) {
+    if (dataset.type == 'DateInfo') return true;
+    return false;
+  }
 }

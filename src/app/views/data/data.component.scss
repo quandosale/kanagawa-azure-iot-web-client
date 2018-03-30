@@ -237,25 +237,25 @@ select.selectpicker {
   line-height: 50px;
   color: #2e343e;
   height: 50px;
-  -webkit-animation-name: spin;
+  -webkit-animation-name: loadingSpin;
   -webkit-animation-duration: 1000ms;
   -webkit-animation-iteration-count: infinite;
   -webkit-animation-timing-function: linear;
-  -moz-animation-name: spin;
+  -moz-animation-name: loadingSpin;
   -moz-animation-duration: 1000ms;
   -moz-animation-iteration-count: infinite;
   -moz-animation-timing-function: linear;
-  -ms-animation-name: spin;
+  -ms-animation-name: loadingSpin;
   -ms-animation-duration: 1000ms;
   -ms-animation-iteration-count: infinite;
   -ms-animation-timing-function: linear;
-  animation-name: spin;
+  animation-name: loadingSpin;
   animation-duration: 1000ms;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
 }
 
-@-ms-keyframes spin {
+@-ms-keyframes loadingSpin {
   from {
     -ms-transform: rotate(0deg);
   }
@@ -264,7 +264,7 @@ select.selectpicker {
   }
 }
 
-@-moz-keyframes spin {
+@-moz-keyframes loadingSpin {
   from {
     -moz-transform: rotate(0deg);
   }
@@ -273,7 +273,7 @@ select.selectpicker {
   }
 }
 
-@-webkit-keyframes spin {
+@-webkit-keyframes loadingSpin {
   from {
     -webkit-transform: rotate(0deg);
   }
@@ -282,11 +282,15 @@ select.selectpicker {
   }
 }
 
-@keyframes spin {
+@keyframes loadingSpin {
   from {
     transform: rotate(0deg);
   }
   to {
     transform: rotate(360deg);
   }
+}
+
+.bold {
+  font-weight: bold;
 }
